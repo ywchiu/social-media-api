@@ -12,7 +12,7 @@ BASE_URL = "https://api.infominer.io/api/v2"
 HEADERS = {"auth-header": os.environ["LARGITDATA_API_KEY"]}
 
 # 1. Create the task
-task = requests.post(
+resp = requests.post(
     f"{BASE_URL}/xhs/search/task",
     headers=HEADERS,
     json={
@@ -22,11 +22,13 @@ task = requests.post(
         "max_pages": 3,
     },
     timeout=30,
-).json()
+)
+resp.raise_for_status()
+task = resp.json()
 
 # 2. Poll until the task leaves INIT / RUNNING
-while True:
-    result = requests.get(
+for _ in range(120):
+    resp = requests.get(
         f"{BASE_URL}/xhs/search/task/{task['id']}",
         headers=HEADERS,
         params={
@@ -34,15 +36,21 @@ while True:
             "pageSize": 100,
         },
         timeout=30,
-    ).json()
+    )
+    resp.raise_for_status()
+    result = resp.json()
     status = result.get("status") or result.get("task", {}).get("status")
     if status not in ("INIT", "RUNNING"):
         break
     time.sleep(15)
+else:
+    raise SystemExit("task still running; poll it again later")
 
 if status == "FAILED":
     raise SystemExit("task failed")
+if status != "DONE":
+    print("task ended with status", status, "- results may be incomplete")
 
 # 3. Read the records (use page / pageSize to fetch further pages)
 for row in result.get("data", []):
-    print(row["url"], row["content"][:60])
+    print(row.get("url"), (row.get("content") or "")[:60])

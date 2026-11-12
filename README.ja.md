@@ -1,4 +1,4 @@
-# ソーシャルメディアデータ API：Weibo・小紅書（RED）・抖音・Threads
+# ソーシャルメディアデータ API：Weibo（微博）・小紅書（RED）・抖音（Douyin）・Threads
 
 [LargitData ソーシャルメディア API](https://www.largitdata.com/ja/social-media-api/) のコード例と OpenAPI 定義です。
 **Weibo（微博）**、**小紅書（RED / RedNote）**、**抖音（Douyin）**、**Threads** の公開投稿、コメント、リポスト、
@@ -16,7 +16,17 @@ PTT、Dcard、X、Reddit、Facebook、Instagram はアカウント単位の設�
 
 Base URL は `https://api.infominer.io/api/v2`、API キーは `auth-header` リクエストヘッダーで送信します。
 収集は非同期です：`POST` でタスクを作成して `id` を受け取り、`GET` でステータスが `INIT` / `RUNNING` でなくなるまで
-ポーリングし、`DONE` になると同じレスポンスに `data` と `total_count` が含まれます。
+ポーリングし、`DONE` になると同じレスポンスに `data` と `total_count` が含まれます（`page` と `pageSize` でページ送り）。
+
+```bash
+curl -X POST https://api.infominer.io/api/v2/weibo/search/task \
+  -H "auth-header: $LARGITDATA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"keyword": "手冲咖啡", "start_date": "2026-06-01", "end_date": "2026-06-30", "max_pages": 3}'
+
+curl "https://api.infominer.io/api/v2/weibo/search/task/$TASK_ID?page=1&pageSize=100" \
+  -H "auth-header: $LARGITDATA_API_KEY"
+```
 
 ## 機能別のエンドポイント
 
@@ -34,9 +44,31 @@ Base URL は `https://api.infominer.io/api/v2`、API キーは `auth-header` リ
 | [抖音（Douyin）コメント API](https://www.largitdata.com/ja/developers/social-media-api/douyin/comments/) | `POST /douyin/pushs/task`, `GET /douyin/pushs/task/{task_id}` |
 | [抖音（Douyin）ユーザータイムライン API](https://www.largitdata.com/ja/developers/social-media-api/douyin/user-timeline/) | `POST /douyin/users/task`, `GET /douyin/users/task/{task_id}` |
 
-完全なドキュメント：https://api.infominer.io/docs
+プラットフォーム別リファレンス：[Weibo](https://www.largitdata.com/ja/developers/social-media-api/weibo/) ·
+[小紅書](https://www.largitdata.com/ja/developers/social-media-api/xiaohongshu/) ·
+[抖音](https://www.largitdata.com/ja/developers/social-media-api/douyin/) ·
+[Threads](https://www.largitdata.com/ja/developers/social-media-api/threads/)。完全なドキュメント：https://api.infominer.io/docs
 
 ## ファイル
 
 - [`openapi.json`](openapi.json)：Weibo・小紅書・抖音・Threads エンドポイントの OpenAPI 3.1 定義（2026-10-25 仕様スナップショット）
-- [`examples/`](examples/)：Python のサンプル（`export LARGITDATA_API_KEY=...` を設定して実行）
+- [`examples/`](examples/)：Python のサンプル（`pip install -r examples/requirements.txt` の後、
+  `export LARGITDATA_API_KEY=...` を設定して実行）
+
+## 知っておきたい制限
+
+- キーワード検索の結果は 1 ページ最大 100 件、コメントは最大 1000 件まで取得できます。
+- Weibo と小紅書のコメントタスクは 2 層目の返信（`crawl_second_layer`）も取得できます。抖音は対象外です。
+- 抖音のコメントタスクは既定で 1 動画あたり 50 件を収集します（`max_items`、`get_all` で変更）。
+- Weibo のリポストチェーンは深さ 10 まで追跡できます（既定は 3）。
+- Threads の検索・返信・タイムラインのタスクは、ポーリングでステータスと件数のみを返します。結果はタスク完了後に
+  API で取得します。reactions タスクは完了時に reactions の一覧を返し、`mask_author` で投稿者の識別情報を除外できます。
+- Weibo の英語翻訳は購読キーワードについて直近 30 日分をさかのぼって取得します。任意の投稿をその場で翻訳する機能ではありません。
+- 取得できる期間、件数、更新頻度はプロジェクトごとに確認します。
+
+## 概要
+
+[LargitData](https://www.largitdata.com/ja/)（大數軟體有限公司）は台北の企業で、InfoMiner、RAGi とデータ API を提供しています。
+お問い合わせは[トライアル申込フォーム](https://www.largitdata.com/ja/social-media-api/#api-inquiry)からどうぞ。
+
+このリポジトリのサンプルコードは MIT License で公開しています。API 自体の利用は LargitData との契約に従います。

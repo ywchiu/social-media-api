@@ -56,6 +56,7 @@
           "Weibo"
         ],
         "summary": "Creates a keyword search task with an optional date range and page limit.",
+        "operationId": "postWeiboSearchTask",
         "security": [
           {
             "authHeader": []
@@ -123,6 +124,7 @@
           "Weibo"
         ],
         "summary": "Polls a search task; once DONE it returns the posts and total_count, paged.",
+        "operationId": "getWeiboSearchTaskTaskId",
         "security": [
           {
             "authHeader": []
@@ -178,11 +180,12 @@
             "description": "Posts per page, max 100.",
             "schema": {
               "type": "integer",
-              "default": 100
+              "default": 100,
+              "maximum": 100
             }
           }
         ],
-        "description": "Response fields: url, author, author_id, content, tm, datetime, metadata_tags, sentiment, like_count, comment_count, share_count."
+        "description": "Fields seen in illustrative samples (not enumerated in the specification): url, author, author_id, content, tm, datetime, metadata_tags, sentiment, like_count, comment_count, share_count."
       }
     },
     "/weibo/pushs/task": {
@@ -191,6 +194,7 @@
           "Weibo"
         ],
         "summary": "Creates a comment task from a post URL, with sort order and optional second-layer replies.",
+        "operationId": "postWeiboPushsTask",
         "security": [
           {
             "authHeader": []
@@ -266,6 +270,7 @@
           "Weibo"
         ],
         "summary": "Polls a comment task; once DONE it returns comments, up to 1000 per page.",
+        "operationId": "getWeiboPushsTaskTaskId",
         "security": [
           {
             "authHeader": []
@@ -321,7 +326,8 @@
             "description": "Comments per page, max 1000.",
             "schema": {
               "type": "integer",
-              "default": 1000
+              "default": 1000,
+              "maximum": 1000
             }
           }
         ],
@@ -334,6 +340,7 @@
           "Weibo"
         ],
         "summary": "Creates a repost collection task from a post URL.",
+        "operationId": "postWeiboRepostsTask",
         "security": [
           {
             "authHeader": []
@@ -389,6 +396,7 @@
           "Weibo"
         ],
         "summary": "Polls a repost task; once DONE it returns repost records, each with parent_id.",
+        "operationId": "getWeiboRepostsTaskTaskId",
         "security": [
           {
             "authHeader": []
@@ -444,7 +452,8 @@
             "description": "Reposts per page, max 100.",
             "schema": {
               "type": "integer",
-              "default": 100
+              "default": 100,
+              "maximum": 100
             }
           }
         ],
@@ -457,6 +466,7 @@
           "Weibo"
         ],
         "summary": "Traces a repost upward through its chain, fetching parent posts not yet stored.",
+        "operationId": "postWeiboRepostParentTask",
         "security": [
           {
             "authHeader": []
@@ -516,6 +526,7 @@
           "Weibo"
         ],
         "summary": "Polls a repost-chain task; when DONE or PARTIAL it returns the chain retrieved so far and its post count.",
+        "operationId": "getWeiboRepostParentTaskTaskId",
         "security": [
           {
             "authHeader": []
@@ -564,6 +575,7 @@
           "Weibo"
         ],
         "summary": "Creates a public account timeline task for an account ID and date range.",
+        "operationId": "postWeiboUsersTask",
         "security": [
           {
             "authHeader": []
@@ -629,6 +641,7 @@
           "Weibo"
         ],
         "summary": "Polls a timeline task; once DONE it returns the profile and the timelines.",
+        "operationId": "getWeiboUsersTaskTaskId",
         "security": [
           {
             "authHeader": []
@@ -677,6 +690,7 @@
           "Weibo"
         ],
         "summary": "Queries translated posts for subscribed keywords by date range, sort order and page.",
+        "operationId": "postWeiboTranslateSearch",
         "security": [
           {
             "authHeader": []
@@ -771,6 +785,7 @@
           "Weibo"
         ],
         "summary": "Returns the translated comments of one post by post_id.",
+        "operationId": "postWeiboTranslatePushs",
         "security": [
           {
             "authHeader": []
@@ -829,6 +844,7 @@
           "Weibo"
         ],
         "summary": "Returns the translated reposts of one original post by post_id.",
+        "operationId": "postWeiboTranslateReposts",
         "security": [
           {
             "authHeader": []
@@ -891,6 +907,7 @@
           "Xiaohongshu (RedNote)"
         ],
         "summary": "Creates a note keyword search task with an optional date range and page limit.",
+        "operationId": "postXhsSearchTask",
         "security": [
           {
             "authHeader": []
@@ -958,6 +975,7 @@
           "Xiaohongshu (RedNote)"
         ],
         "summary": "Polls a note search task; once DONE it returns notes and total_count, up to 100 per page.",
+        "operationId": "getXhsSearchTaskTaskId",
         "security": [
           {
             "authHeader": []
@@ -1013,11 +1031,12 @@
             "description": "Notes per page, max 100.",
             "schema": {
               "type": "integer",
-              "default": 100
+              "default": 100,
+              "maximum": 100
             }
           }
         ],
-        "description": "Response fields: url, mblogid, author, author_id, content, tm, metadata_tags, like_count, comment_count, share_count."
+        "description": "Fields seen in illustrative samples (not enumerated in the specification): url, mblogid, author, author_id, content, tm, metadata_tags, like_count, comment_count, share_count."
       }
     },
     "/xhs/pushs/task": {
@@ -1026,6 +1045,7 @@
           "Xiaohongshu (RedNote)"
         ],
         "summary": "Creates a comment task from a note URL, with sort order, second-layer replies and a duplicate-check switch.",
+        "operationId": "postXhsPushsTask",
         "security": [
           {
             "authHeader": []
@@ -1101,6 +1121,7 @@
           "Xiaohongshu (RedNote)"
         ],
         "summary": "Polls a note comment task; once DONE it returns comments, up to 1000 per page.",
+        "operationId": "getXhsPushsTaskTaskId",
         "security": [
           {
             "authHeader": []
@@ -1156,7 +1177,8 @@
             "description": "Comments per page, max 1000.",
             "schema": {
               "type": "integer",
-              "default": 1000
+              "default": 1000,
+              "maximum": 1000
             }
           }
         ],
@@ -1169,6 +1191,7 @@
           "Xiaohongshu (RedNote)"
         ],
         "summary": "Creates a public account timeline task for an account ID and date range.",
+        "operationId": "postXhsUsersTask",
         "security": [
           {
             "authHeader": []
@@ -1234,6 +1257,7 @@
           "Xiaohongshu (RedNote)"
         ],
         "summary": "Polls a timeline task; once DONE it returns the profile and the note timeline.",
+        "operationId": "getXhsUsersTaskTaskId",
         "security": [
           {
             "authHeader": []
@@ -1282,6 +1306,7 @@
           "Douyin"
         ],
         "summary": "Creates a video keyword search task with an optional date range and page limit.",
+        "operationId": "postDouyinSearchTask",
         "security": [
           {
             "authHeader": []
@@ -1349,6 +1374,7 @@
           "Douyin"
         ],
         "summary": "Polls a video search task; once DONE it returns video posts and total_count, up to 100 per page.",
+        "operationId": "getDouyinSearchTaskTaskId",
         "security": [
           {
             "authHeader": []
@@ -1404,11 +1430,12 @@
             "description": "Videos per page, max 100.",
             "schema": {
               "type": "integer",
-              "default": 100
+              "default": 100,
+              "maximum": 100
             }
           }
         ],
-        "description": "Response fields: url, post_id, author, content, tm, date, metadata_tags, like_count, comment_count, share_count, video_length."
+        "description": "Fields seen in illustrative samples (not enumerated in the specification): url, post_id, author, content, tm, date, metadata_tags, like_count, comment_count, share_count, video_length."
       }
     },
     "/douyin/pushs/task": {
@@ -1417,6 +1444,7 @@
           "Douyin"
         ],
         "summary": "Creates a comment task from a video URL; 50 comments by default, adjustable with max_items or get_all.",
+        "operationId": "postDouyinPushsTask",
         "security": [
           {
             "authHeader": []
@@ -1494,6 +1522,7 @@
           "Douyin"
         ],
         "summary": "Returns the stored comments of the video, up to 1000 per page, sorted hot or by time.",
+        "operationId": "getDouyinPushsTaskTaskId",
         "security": [
           {
             "authHeader": []
@@ -1549,7 +1578,8 @@
             "description": "Comments per page, max 1000.",
             "schema": {
               "type": "integer",
-              "default": 1000
+              "default": 1000,
+              "maximum": 1000
             }
           },
           {
@@ -1575,6 +1605,7 @@
           "Douyin"
         ],
         "summary": "Creates a public account timeline task for an account ID and date range, with optional max_items.",
+        "operationId": "postDouyinUsersTask",
         "security": [
           {
             "authHeader": []
@@ -1644,6 +1675,7 @@
           "Douyin"
         ],
         "summary": "Polls a timeline task; once DONE it returns the profile and the post timeline.",
+        "operationId": "getDouyinUsersTaskTaskId",
         "security": [
           {
             "authHeader": []
@@ -1692,6 +1724,7 @@
           "Douyin"
         ],
         "summary": "Synchronously resolves a collected video post to a download URL; redirect only, no hosting.",
+        "operationId": "postDouyinVideos",
         "security": [
           {
             "authHeader": []
@@ -1754,6 +1787,7 @@
           "Threads"
         ],
         "summary": "Creates a keyword search task, with optional account name, date range, max_scroll and rerun.",
+        "operationId": "postThreadsSearchTask",
         "security": [
           {
             "authHeader": []
@@ -1814,6 +1848,7 @@
                   },
                   "max_scroll": {
                     "type": "integer",
+                    "minimum": 0,
                     "description": "Integer; must be 0 or greater on search tasks."
                   },
                   "rerun": {
@@ -1840,6 +1875,7 @@
           "Threads"
         ],
         "summary": "Polls a search task for status and the completed, total, failed_articles and failed_pages counters; result rows are not included.",
+        "operationId": "getThreadsSearchTaskTaskId",
         "security": [
           {
             "authHeader": []
@@ -1895,7 +1931,7 @@
             }
           }
         ],
-        "description": "Response fields: id, status, completed, total, failed_articles, failed_pages, partial, timed_out, created_at, keyword, account_username."
+        "description": "Fields seen in illustrative samples (not enumerated in the specification): id, status, completed, total, failed_articles, failed_pages, partial, timed_out, created_at, keyword, account_username."
       }
     },
     "/threads/pushs/task": {
@@ -1904,6 +1940,7 @@
           "Threads"
         ],
         "summary": "Creates a reply collection task from a post URL.",
+        "operationId": "postThreadsPushsTask",
         "security": [
           {
             "authHeader": []
@@ -1978,6 +2015,7 @@
           "Threads"
         ],
         "summary": "Polls a reply task for status and counters; reply rows are not included.",
+        "operationId": "getThreadsPushsTaskTaskId",
         "security": [
           {
             "authHeader": []
@@ -2042,6 +2080,7 @@
           "Threads"
         ],
         "summary": "Creates a public account timeline task with an optional date range.",
+        "operationId": "postThreadsUsersTask",
         "security": [
           {
             "authHeader": []
@@ -2124,6 +2163,7 @@
           "Threads"
         ],
         "summary": "Polls a timeline task for status and counters; post rows are not included.",
+        "operationId": "getThreadsUsersTaskTaskId",
         "security": [
           {
             "authHeader": []
@@ -2188,6 +2228,7 @@
           "Threads"
         ],
         "summary": "Creates a reactions collection task from a post URL; rerun defaults to true.",
+        "operationId": "postThreadsReactionsTask",
         "security": [
           {
             "authHeader": []
@@ -2259,6 +2300,7 @@
           "Threads"
         ],
         "summary": "Polls a reactions task; on success it returns the reactions list with pagination.",
+        "operationId": "getThreadsReactionsTaskTaskId",
         "security": [
           {
             "authHeader": []

@@ -2,7 +2,7 @@
 
 Code examples and an OpenAPI description for the [LargitData Social Media API](https://www.largitdata.com/en/social-media-api/),
 which returns public posts, comments, reposts and account timelines as JSON from **Weibo (微博)**,
-**Xiaohongshu / RedNote (小红书)**, **Douyin (抖音)** and **Threads**. Weibo data is also available with
+**Xiaohongshu (RedNote, 小红书)**, **Douyin (抖音)** and **Threads**. Weibo data is also available with
 **English machine translation** through a keyword subscription. PTT, Dcard, X, Reddit, Facebook and
 Instagram are available through account-configured channels; ask us.
 
@@ -72,9 +72,9 @@ Platform references: [Weibo](https://www.largitdata.com/developers/social-media-
 - Weibo and Xiaohongshu comment tasks can include second-layer replies (`crawl_second_layer`); Douyin cannot.
 - Douyin comment tasks collect 50 comments per video by default (`max_items`, `get_all` to change).
 - Weibo repost chains are traced up to depth 10 (default 3).
-- Threads search, reply and timeline task polls return status and counts; results are retrieved through
-  the API once a task finishes (the retrieval route is confirmed at onboarding). Reactions tasks return
-  the reactions list when they complete; `mask_author` removes author identity fields.
+- Threads search, reply and timeline task polls return status and counts only; results are retrieved
+  through the API once a task finishes. Reactions tasks return the reactions list when they complete;
+  `mask_author` removes author identity fields.
 - Weibo English translation backfills the last 30 days for subscribed keywords; arbitrary posts are not
   translated on demand.
 - How far back data goes, volume and refresh frequency are confirmed per project.
