@@ -80,7 +80,7 @@ Platform references: [Weibo](https://www.largitdata.com/developers/social-media-
 - Douyin comment tasks collect 50 comments per video by default (`max_items`, `get_all` to change).
 - Weibo repost chains are traced up to depth 10 (default 3).
 - Threads search, reply and timeline polls return the rows collected so far in `data` with `total_count`,
-  readable while the task is still `RUNNING` (up to 1000 rows per response; the bundled 2026-10-25 OpenAPI
+  readable while the task is still `RUNNING`, paged with `page` and `per_page` (max 1000; the bundled 2026-10-25 OpenAPI
   file still describes these polls as status-only). Reactions tasks return the post's view, like and share counts
   and a paginated reactions list (`per_page` up to 1000) when they complete; `mask_author` removes author
   identity fields. This is a crawler-based service, not Meta's official Threads API.

@@ -32,6 +32,10 @@ for _ in range(120):
     resp = requests.get(
         f"{BASE_URL}/threads/search/task/{task['id']}",
         headers=HEADERS,
+        params={
+            "page": 1,
+            "per_page": 1000,
+        },
         timeout=30,
     )
     resp.raise_for_status()
@@ -48,6 +52,6 @@ if status == "FAILED":
 if status != "DONE":
     print("task ended with status", status, "- results may be incomplete")
 
-# 3. Read the records
+# 3. Read the records (use page / per_page to fetch further pages)
 for row in result.get("data", []):
     print(row.get("url"), (row.get("content") or "")[:60])
