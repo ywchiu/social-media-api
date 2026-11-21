@@ -43,6 +43,10 @@ curl "https://api.infominer.io/api/v2/weibo/search/task/$TASK_ID?page=1&pageSize
 | [抖音（Douyin）キーワード検索 API](https://www.largitdata.com/ja/developers/social-media-api/douyin/keyword-search/) | `POST /douyin/search/task`, `GET /douyin/search/task/{task_id}` |
 | [抖音（Douyin）コメント API](https://www.largitdata.com/ja/developers/social-media-api/douyin/comments/) | `POST /douyin/pushs/task`, `GET /douyin/pushs/task/{task_id}` |
 | [抖音（Douyin）ユーザータイムライン API](https://www.largitdata.com/ja/developers/social-media-api/douyin/user-timeline/) | `POST /douyin/users/task`, `GET /douyin/users/task/{task_id}` |
+| [Threads キーワード検索 API](https://www.largitdata.com/ja/developers/social-media-api/threads/keyword-search/) | `POST /threads/search/task`, `GET /threads/search/task/{task_id}` |
+| [Threads 返信 API](https://www.largitdata.com/ja/developers/social-media-api/threads/replies/) | `POST /threads/pushs/task`, `GET /threads/pushs/task/{task_id}` |
+| [Threads ユーザータイムライン API](https://www.largitdata.com/ja/developers/social-media-api/threads/user-timeline/) | `POST /threads/users/task`, `GET /threads/users/task/{task_id}` |
+| [Threads reactions API](https://www.largitdata.com/ja/developers/social-media-api/threads/reactions/) | `POST /threads/reactions/task`, `GET /threads/reactions/task/{task_id}` |
 
 プラットフォーム別リファレンス：[Weibo](https://www.largitdata.com/ja/developers/social-media-api/weibo/) ·
 [小紅書](https://www.largitdata.com/ja/developers/social-media-api/xiaohongshu/) ·
@@ -61,8 +65,10 @@ curl "https://api.infominer.io/api/v2/weibo/search/task/$TASK_ID?page=1&pageSize
 - Weibo と小紅書のコメントタスクは 2 層目の返信（`crawl_second_layer`）も取得できます。抖音は対象外です。
 - 抖音のコメントタスクは既定で 1 動画あたり 50 件を収集します（`max_items`、`get_all` で変更）。
 - Weibo のリポストチェーンは深さ 10 まで追跡できます（既定は 3）。
-- Threads の検索・返信・タイムラインのタスクは、ポーリングでステータスと件数のみを返します。結果はタスク完了後に
-  API で取得します。reactions タスクは完了時に reactions の一覧を返し、`mask_author` で投稿者の識別情報を除外できます。
+- Threads の検索・返信・タイムラインのタスクは、ポーリングで収集済みの行を `data` に、件数を `total_count` に返し、
+  タスクが `RUNNING` の間も読み取れます。reactions タスクは完了時に投稿の閲覧数・いいね数・シェア数と、ページ分割された
+  reactions 一覧（`per_page` は最大 1000）を返します。`mask_author` で投稿者の識別情報を除外できます。ウェブクローラーで
+  収集するサービスであり、Meta 公式の Threads API ではありません。
 - Weibo の英語翻訳は購読キーワードについて直近 30 日分をさかのぼって取得します。任意の投稿をその場で翻訳する機能ではありません。
 - 取得できる期間、件数、更新頻度はプロジェクトごとに確認します。
 

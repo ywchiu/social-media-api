@@ -1874,7 +1874,7 @@
         "tags": [
           "Threads"
         ],
-        "summary": "Polls a search task for status and the completed, total, failed_articles and failed_pages counters; result rows are not included.",
+        "summary": "Polls a search task: status, the completed, total, failed_articles and failed_pages counters, and the posts collected so far in data with total_count.",
         "operationId": "getThreadsSearchTaskTaskId",
         "security": [
           {
@@ -1931,7 +1931,7 @@
             }
           }
         ],
-        "description": "Fields seen in illustrative samples (not enumerated in the specification): id, status, completed, total, failed_articles, failed_pages, partial, timed_out, created_at, keyword, account_username."
+        "description": "Fields seen in illustrative samples (not enumerated in the specification): id, post_id, url, root_post_id, root_post_url, parent_id, parent_url, author, author_id, author_name, content, tm, tm_crawler, like_count, reaction_count, comment_count, share_count, is_reply, is_quote, reply_to_author, metadata_img, metadata_videos, tag, keyword, source."
       }
     },
     "/threads/pushs/task": {
@@ -2014,7 +2014,7 @@
         "tags": [
           "Threads"
         ],
-        "summary": "Polls a reply task for status and counters; reply rows are not included.",
+        "summary": "Polls a reply task: status, counters, and the post with its replies in data.",
         "operationId": "getThreadsPushsTaskTaskId",
         "security": [
           {
@@ -2071,7 +2071,7 @@
             }
           }
         ],
-        "description": "Response fields: id, status, completed, total, failed_articles, failed_pages, partial, timed_out, created_at, post_url."
+        "description": "Response fields: id, comment_id, post_id, url, post_url, root_post_id, parent_id, reply_level, reply_to_author, author, author_id, content, tm, tm_crawler, like_count, reaction_count, comment_count, share_count, is_reply, is_quote."
       }
     },
     "/threads/users/task": {
@@ -2162,7 +2162,7 @@
         "tags": [
           "Threads"
         ],
-        "summary": "Polls a timeline task for status and counters; post rows are not included.",
+        "summary": "Polls a timeline task: status, counters, and the account's posts in data.",
         "operationId": "getThreadsUsersTaskTaskId",
         "security": [
           {
@@ -2219,7 +2219,7 @@
             }
           }
         ],
-        "description": "Response fields: id, status, completed, total, failed_articles, failed_pages, partial, timed_out, created_at, author_id."
+        "description": "Response fields: id, post_id, url, author, author_id, author_name, content, tm, tm_crawler, like_count, reaction_count, comment_count, share_count, is_reply, is_quote, metadata_img, metadata_videos, tag, source."
       }
     },
     "/threads/reactions/task": {
@@ -2374,7 +2374,7 @@
             }
           }
         ],
-        "description": "Response fields: data, pagination, error_message, task.post_id, task.post_url, task.status, task.warnings."
+        "description": "Response fields: task: status, post_id, view_count, like_count, share_count, total, completed; data: id, post_id, type, author, author_id, updated_at; pagination: page, per_page, total_count, total_pages, has_next, has_prev; error_message."
       }
     }
   }

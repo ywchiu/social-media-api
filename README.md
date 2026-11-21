@@ -53,6 +53,10 @@ Each link goes to a page with parameters, response fields, curl and Python examp
 | [Douyin keyword search API](https://www.largitdata.com/developers/social-media-api/douyin/keyword-search/) | `POST /douyin/search/task`, `GET /douyin/search/task/{task_id}` |
 | [Douyin comments API](https://www.largitdata.com/developers/social-media-api/douyin/comments/) | `POST /douyin/pushs/task`, `GET /douyin/pushs/task/{task_id}` |
 | [Douyin user timeline API](https://www.largitdata.com/developers/social-media-api/douyin/user-timeline/) | `POST /douyin/users/task`, `GET /douyin/users/task/{task_id}` |
+| [Threads keyword search API](https://www.largitdata.com/developers/social-media-api/threads/keyword-search/) | `POST /threads/search/task`, `GET /threads/search/task/{task_id}` |
+| [Threads replies API](https://www.largitdata.com/developers/social-media-api/threads/replies/) | `POST /threads/pushs/task`, `GET /threads/pushs/task/{task_id}` |
+| [Threads user timeline API](https://www.largitdata.com/developers/social-media-api/threads/user-timeline/) | `POST /threads/users/task`, `GET /threads/users/task/{task_id}` |
+| [Threads reactions API](https://www.largitdata.com/developers/social-media-api/threads/reactions/) | `POST /threads/reactions/task`, `GET /threads/reactions/task/{task_id}` |
 
 Platform references: [Weibo](https://www.largitdata.com/developers/social-media-api/weibo/) ·
 [Xiaohongshu](https://www.largitdata.com/developers/social-media-api/xiaohongshu/) ·
@@ -65,6 +69,9 @@ Platform references: [Weibo](https://www.largitdata.com/developers/social-media-
   endpoints (2026-10-25 specification snapshot).
 - [`examples/`](examples/): runnable Python scripts (`pip install -r examples/requirements.txt`,
   then `export LARGITDATA_API_KEY=...`).
+- [`postman_collection.json`](postman_collection.json): a Postman collection (v2.1) with every endpoint;
+  import it and set the `api_key` collection variable.
+- [`python/`](python/): `largitdata-social`, a small Python client (create a task, wait for it, read rows).
 
 ## Limits worth knowing
 
@@ -72,9 +79,11 @@ Platform references: [Weibo](https://www.largitdata.com/developers/social-media-
 - Weibo and Xiaohongshu comment tasks can include second-layer replies (`crawl_second_layer`); Douyin cannot.
 - Douyin comment tasks collect 50 comments per video by default (`max_items`, `get_all` to change).
 - Weibo repost chains are traced up to depth 10 (default 3).
-- Threads search, reply and timeline task polls return status and counts only; results are retrieved
-  through the API once a task finishes. Reactions tasks return the reactions list when they complete;
-  `mask_author` removes author identity fields.
+- Threads search, reply and timeline polls return the rows collected so far in `data` with `total_count`,
+  readable while the task is still `RUNNING` (up to 1000 rows per response; the bundled 2026-10-25 OpenAPI
+  file still describes these polls as status-only). Reactions tasks return the post's view, like and share counts
+  and a paginated reactions list (`per_page` up to 1000) when they complete; `mask_author` removes author
+  identity fields. This is a crawler-based service, not Meta's official Threads API.
 - Weibo English translation backfills the last 30 days for subscribed keywords; arbitrary posts are not
   translated on demand.
 - How far back data goes, volume and refresh frequency are confirmed per project.

@@ -1,0 +1,1204 @@
+{
+  "info": {
+    "name": "LargitData Social Media API (Weibo, Xiaohongshu, Douyin, Threads)",
+    "description": "Data is collected by web crawlers from publicly published content. Reference: https://www.largitdata.com/developers/social-media-api/ . Keys are issued after a trial request: https://www.largitdata.com/en/social-media-api/#api-inquiry",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "auth-header",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{api_key}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://api.infominer.io/api/v2"
+    },
+    {
+      "key": "api_key",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Weibo",
+      "item": [
+        {
+          "name": "POST /weibo/search/task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/weibo/search/task",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "weibo",
+                "search",
+                "task"
+              ]
+            },
+            "description": "Creates a keyword search task with an optional date range and page limit.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"keyword\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "GET /weibo/search/task/{task_id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/weibo/search/task/:task_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "weibo",
+                "search",
+                "task",
+                ":task_id"
+              ],
+              "variable": [
+                {
+                  "key": "task_id",
+                  "value": ""
+                }
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "pageSize",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Polls a search task; once DONE it returns the posts and total_count, paged."
+          }
+        },
+        {
+          "name": "POST /weibo/pushs/task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/weibo/pushs/task",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "weibo",
+                "pushs",
+                "task"
+              ]
+            },
+            "description": "Creates a comment task from a post URL, with sort order and optional second-layer replies.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"post_url\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "GET /weibo/pushs/task/{task_id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/weibo/pushs/task/:task_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "weibo",
+                "pushs",
+                "task",
+                ":task_id"
+              ],
+              "variable": [
+                {
+                  "key": "task_id",
+                  "value": ""
+                }
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "pageSize",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Polls a comment task; once DONE it returns comments, up to 1000 per page."
+          }
+        },
+        {
+          "name": "POST /weibo/reposts/task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/weibo/reposts/task",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "weibo",
+                "reposts",
+                "task"
+              ]
+            },
+            "description": "Creates a repost collection task from a post URL.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"post_url\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "GET /weibo/reposts/task/{task_id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/weibo/reposts/task/:task_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "weibo",
+                "reposts",
+                "task",
+                ":task_id"
+              ],
+              "variable": [
+                {
+                  "key": "task_id",
+                  "value": ""
+                }
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "pageSize",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Polls a repost task; once DONE it returns repost records, each with parent_id."
+          }
+        },
+        {
+          "name": "POST /weibo/repost/parent/task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/weibo/repost/parent/task",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "weibo",
+                "repost",
+                "parent",
+                "task"
+              ]
+            },
+            "description": "Traces a repost upward through its chain, fetching parent posts not yet stored.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"post_url\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "GET /weibo/repost/parent/task/{task_id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/weibo/repost/parent/task/:task_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "weibo",
+                "repost",
+                "parent",
+                "task",
+                ":task_id"
+              ],
+              "variable": [
+                {
+                  "key": "task_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Polls a repost-chain task; when DONE or PARTIAL it returns the chain retrieved so far and its post count."
+          }
+        },
+        {
+          "name": "POST /weibo/users/task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/weibo/users/task",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "weibo",
+                "users",
+                "task"
+              ]
+            },
+            "description": "Creates a public account timeline task for an account ID and date range.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"author_id\": \"\",\n  \"endDate\": \"\",\n  \"startDate\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "GET /weibo/users/task/{task_id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/weibo/users/task/:task_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "weibo",
+                "users",
+                "task",
+                ":task_id"
+              ],
+              "variable": [
+                {
+                  "key": "task_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Polls a timeline task; once DONE it returns the profile and the timelines."
+          }
+        },
+        {
+          "name": "POST /weibo/translate/search",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/weibo/translate/search",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "weibo",
+                "translate",
+                "search"
+              ]
+            },
+            "description": "Queries translated posts for subscribed keywords by date range, sort order and page.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"endDate\": \"\",\n  \"page\": null,\n  \"sorted\": \"\",\n  \"startDate\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "POST /weibo/translate/pushs",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/weibo/translate/pushs",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "weibo",
+                "translate",
+                "pushs"
+              ]
+            },
+            "description": "Returns the translated comments of one post by post_id.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"post_id\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "POST /weibo/translate/reposts",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/weibo/translate/reposts",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "weibo",
+                "translate",
+                "reposts"
+              ]
+            },
+            "description": "Returns the translated reposts of one original post by post_id.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"post_id\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Xiaohongshu (RedNote)",
+      "item": [
+        {
+          "name": "POST /xhs/search/task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/xhs/search/task",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "xhs",
+                "search",
+                "task"
+              ]
+            },
+            "description": "Creates a note keyword search task with an optional date range and page limit.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"keyword\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "GET /xhs/search/task/{task_id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/xhs/search/task/:task_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "xhs",
+                "search",
+                "task",
+                ":task_id"
+              ],
+              "variable": [
+                {
+                  "key": "task_id",
+                  "value": ""
+                }
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "pageSize",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Polls a note search task; once DONE it returns notes and total_count, up to 100 per page."
+          }
+        },
+        {
+          "name": "POST /xhs/pushs/task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/xhs/pushs/task",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "xhs",
+                "pushs",
+                "task"
+              ]
+            },
+            "description": "Creates a comment task from a note URL, with sort order, second-layer replies and a duplicate-check switch.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"post_url\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "GET /xhs/pushs/task/{task_id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/xhs/pushs/task/:task_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "xhs",
+                "pushs",
+                "task",
+                ":task_id"
+              ],
+              "variable": [
+                {
+                  "key": "task_id",
+                  "value": ""
+                }
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "pageSize",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Polls a note comment task; once DONE it returns comments, up to 1000 per page."
+          }
+        },
+        {
+          "name": "POST /xhs/users/task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/xhs/users/task",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "xhs",
+                "users",
+                "task"
+              ]
+            },
+            "description": "Creates a public account timeline task for an account ID and date range.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"author_id\": \"\",\n  \"endDate\": \"\",\n  \"startDate\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "GET /xhs/users/task/{task_id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/xhs/users/task/:task_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "xhs",
+                "users",
+                "task",
+                ":task_id"
+              ],
+              "variable": [
+                {
+                  "key": "task_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Polls a timeline task; once DONE it returns the profile and the note timeline."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Douyin",
+      "item": [
+        {
+          "name": "POST /douyin/search/task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/douyin/search/task",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "douyin",
+                "search",
+                "task"
+              ]
+            },
+            "description": "Creates a video keyword search task with an optional date range and page limit.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"keyword\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "GET /douyin/search/task/{task_id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/douyin/search/task/:task_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "douyin",
+                "search",
+                "task",
+                ":task_id"
+              ],
+              "variable": [
+                {
+                  "key": "task_id",
+                  "value": ""
+                }
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "pageSize",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Polls a video search task; once DONE it returns video posts and total_count, up to 100 per page."
+          }
+        },
+        {
+          "name": "POST /douyin/pushs/task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/douyin/pushs/task",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "douyin",
+                "pushs",
+                "task"
+              ]
+            },
+            "description": "Creates a comment task from a video URL; 50 comments by default, adjustable with max_items or get_all.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"post_url\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "GET /douyin/pushs/task/{task_id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/douyin/pushs/task/:task_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "douyin",
+                "pushs",
+                "task",
+                ":task_id"
+              ],
+              "variable": [
+                {
+                  "key": "task_id",
+                  "value": ""
+                }
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "pageSize",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "order_type",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Returns the stored comments of the video, up to 1000 per page, sorted hot or by time."
+          }
+        },
+        {
+          "name": "POST /douyin/users/task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/douyin/users/task",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "douyin",
+                "users",
+                "task"
+              ]
+            },
+            "description": "Creates a public account timeline task for an account ID and date range, with optional max_items.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"author_id\": \"\",\n  \"endDate\": \"\",\n  \"startDate\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "GET /douyin/users/task/{task_id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/douyin/users/task/:task_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "douyin",
+                "users",
+                "task",
+                ":task_id"
+              ],
+              "variable": [
+                {
+                  "key": "task_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Polls a timeline task; once DONE it returns the profile and the post timeline."
+          }
+        },
+        {
+          "name": "POST /douyin/videos",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/douyin/videos",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "douyin",
+                "videos"
+              ]
+            },
+            "description": "Synchronously resolves a collected video post to a download URL; redirect only, no hosting.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"post_url\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Threads",
+      "item": [
+        {
+          "name": "POST /threads/search/task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/threads/search/task",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "threads",
+                "search",
+                "task"
+              ]
+            },
+            "description": "Creates a keyword search task, with optional account name, date range, max_scroll and rerun.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"keyword\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "GET /threads/search/task/{task_id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/threads/search/task/:task_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "threads",
+                "search",
+                "task",
+                ":task_id"
+              ],
+              "variable": [
+                {
+                  "key": "task_id",
+                  "value": ""
+                }
+              ],
+              "query": [
+                {
+                  "key": "mask_author",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Polls a search task: status, the completed, total, failed_articles and failed_pages counters, and the posts collected so far in data with total_count."
+          }
+        },
+        {
+          "name": "POST /threads/pushs/task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/threads/pushs/task",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "threads",
+                "pushs",
+                "task"
+              ]
+            },
+            "description": "Creates a reply collection task from a post URL.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"post_url\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "GET /threads/pushs/task/{task_id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/threads/pushs/task/:task_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "threads",
+                "pushs",
+                "task",
+                ":task_id"
+              ],
+              "variable": [
+                {
+                  "key": "task_id",
+                  "value": ""
+                }
+              ],
+              "query": [
+                {
+                  "key": "mask_author",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Polls a reply task: status, counters, and the post with its replies in data."
+          }
+        },
+        {
+          "name": "POST /threads/users/task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/threads/users/task",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "threads",
+                "users",
+                "task"
+              ]
+            },
+            "description": "Creates a public account timeline task with an optional date range.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"author_id\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "GET /threads/users/task/{task_id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/threads/users/task/:task_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "threads",
+                "users",
+                "task",
+                ":task_id"
+              ],
+              "variable": [
+                {
+                  "key": "task_id",
+                  "value": ""
+                }
+              ],
+              "query": [
+                {
+                  "key": "mask_author",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Polls a timeline task: status, counters, and the account's posts in data."
+          }
+        },
+        {
+          "name": "POST /threads/reactions/task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/threads/reactions/task",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "threads",
+                "reactions",
+                "task"
+              ]
+            },
+            "description": "Creates a reactions collection task from a post URL; rerun defaults to true.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"post_url\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "GET /threads/reactions/task/{task_id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/threads/reactions/task/:task_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "threads",
+                "reactions",
+                "task",
+                ":task_id"
+              ],
+              "variable": [
+                {
+                  "key": "task_id",
+                  "value": ""
+                }
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "per_page",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "mask_author",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Polls a reactions task; on success it returns the reactions list with pagination."
+          }
+        }
+      ]
+    }
+  ]
+}

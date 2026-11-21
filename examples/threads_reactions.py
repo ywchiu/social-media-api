@@ -1,6 +1,6 @@
-"""Threads post reactions, with author fields masked.
+"""Threads reactions API.
 
-Reference: https://www.largitdata.com/developers/social-media-api/threads/
+Reference: https://www.largitdata.com/developers/social-media-api/threads/reactions/
 Set LARGITDATA_API_KEY first; keys are issued after a trial request:
 https://www.largitdata.com/en/social-media-api/#api-inquiry
 """
@@ -16,8 +16,8 @@ resp = requests.post(
     f"{BASE_URL}/threads/reactions/task",
     headers=HEADERS,
     json={
-        "post_url": "https://www.threads.com/@sample_user_1/post/SAMPLE000001",
-        "mask_author": True,
+        "post_url": "https://www.threads.com/@sample_user_1/post/00000000001",
+        "mask_author": False,
     },
     timeout=30,
 )
@@ -32,7 +32,6 @@ for _ in range(120):
         params={
             "page": 1,
             "per_page": 1000,
-            "mask_author": "true",
         },
         timeout=30,
     )
@@ -51,5 +50,7 @@ if status != "DONE":
     print("task ended with status", status, "- results may be incomplete")
 
 # 3. Read the records (use page / per_page to fetch further pages)
+if result.get("error_message"):
+    raise SystemExit(result["error_message"])
 for row in result.get("data", []):
-    print(row)
+    print(row.get("type"), row.get("author"))

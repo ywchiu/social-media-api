@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "largitdata-social"
+version = "0.1.0"
+description = "Python client for the LargitData Social Media Data API: Weibo, Xiaohongshu (RedNote), Douyin and Threads"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+dependencies = ["requests>=2.31"]
+keywords = ["weibo", "xiaohongshu", "rednote", "douyin", "threads", "social media data", "api client"]
+
+[project.urls]
+Documentation = "https://www.largitdata.com/developers/social-media-api/"
+Repository = "https://github.com/ywchiu/social-media-api"
+
+[tool.setuptools]
+packages = ["largitdata_social"]
