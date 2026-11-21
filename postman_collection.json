@@ -1,6 +1,6 @@
 {
   "info": {
-    "name": "LargitData Social Media API (Weibo, Xiaohongshu, Douyin, Threads)",
+    "name": "LargitData Social Media API (Weibo, Xiaohongshu, Douyin, Threads, Bilibili, Zhihu, Baidu Tieba)",
     "description": "Data is collected by web crawlers from publicly published content. Reference: https://www.largitdata.com/developers/social-media-api/ . Keys are issued after a trial request: https://www.largitdata.com/en/social-media-api/#api-inquiry",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
@@ -1196,6 +1196,447 @@
               ]
             },
             "description": "Polls a reactions task; on success it returns the reactions list with pagination."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bilibili",
+      "item": [
+        {
+          "name": "POST /bilibili/search/task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/bilibili/search/task",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "bilibili",
+                "search",
+                "task"
+              ]
+            },
+            "description": "Create a video keyword search task with an optional date range and page limit.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"keyword\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "GET /bilibili/search/task/{task_id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/bilibili/search/task/:task_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "bilibili",
+                "search",
+                "task",
+                ":task_id"
+              ],
+              "variable": [
+                {
+                  "key": "task_id",
+                  "value": ""
+                }
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "pageSize",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Poll the search task; once DONE it returns the videos and total_count, up to 100 per page."
+          }
+        },
+        {
+          "name": "POST /bilibili/pushs/task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/bilibili/pushs/task",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "bilibili",
+                "pushs",
+                "task"
+              ]
+            },
+            "description": "Create a comment task from a /video/BV... URL, optionally with replies.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"post_url\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "GET /bilibili/pushs/task/{task_id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/bilibili/pushs/task/:task_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "bilibili",
+                "pushs",
+                "task",
+                ":task_id"
+              ],
+              "variable": [
+                {
+                  "key": "task_id",
+                  "value": ""
+                }
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "pageSize",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Poll the comment task; once DONE it returns the comments, up to 1000 per page."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Zhihu",
+      "item": [
+        {
+          "name": "POST /zhihu/search/task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/zhihu/search/task",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "zhihu",
+                "search",
+                "task"
+              ]
+            },
+            "description": "Create a keyword search task over answers and column articles, with an optional date range and page limit.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"keyword\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "GET /zhihu/search/task/{task_id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/zhihu/search/task/:task_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "zhihu",
+                "search",
+                "task",
+                ":task_id"
+              ],
+              "variable": [
+                {
+                  "key": "task_id",
+                  "value": ""
+                }
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "pageSize",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Poll the search task; once DONE it returns the items and total_count, up to 100 per page."
+          }
+        },
+        {
+          "name": "POST /zhihu/pushs/task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/zhihu/pushs/task",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "zhihu",
+                "pushs",
+                "task"
+              ]
+            },
+            "description": "Create a task from a question, answer or column-article URL: answers for a question, comments for an answer or article.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"post_url\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "GET /zhihu/pushs/task/{task_id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/zhihu/pushs/task/:task_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "zhihu",
+                "pushs",
+                "task",
+                ":task_id"
+              ],
+              "variable": [
+                {
+                  "key": "task_id",
+                  "value": ""
+                }
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "pageSize",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Poll the task; once DONE it returns the answers or comments, up to 1000 per page."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Baidu Tieba",
+      "item": [
+        {
+          "name": "POST /tieba/search/task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/tieba/search/task",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tieba",
+                "search",
+                "task"
+              ]
+            },
+            "description": "Create a thread keyword search task with an optional date range and page limit.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"keyword\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "GET /tieba/search/task/{task_id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/tieba/search/task/:task_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tieba",
+                "search",
+                "task",
+                ":task_id"
+              ],
+              "variable": [
+                {
+                  "key": "task_id",
+                  "value": ""
+                }
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "pageSize",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Poll the search task; once DONE it returns the threads and total_count, up to 100 per page."
+          }
+        },
+        {
+          "name": "POST /tieba/pushs/task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/tieba/pushs/task",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tieba",
+                "pushs",
+                "task"
+              ]
+            },
+            "description": "Create a reply task from a thread URL: floors from the second on, optionally with in-floor replies.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"post_url\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "GET /tieba/pushs/task/{task_id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/tieba/pushs/task/:task_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tieba",
+                "pushs",
+                "task",
+                ":task_id"
+              ],
+              "variable": [
+                {
+                  "key": "task_id",
+                  "value": ""
+                }
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "pageSize",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Poll the reply task; once DONE it returns the floors and replies, up to 1000 per page."
           }
         }
       ]

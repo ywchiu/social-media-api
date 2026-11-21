@@ -43,10 +43,10 @@ class Client:
         """Poll until the task leaves INIT / RUNNING and return the last response.
 
         A status other than DONE (PARTIAL, TIMED_OUT) is returned as is, since
-        the response can still carry rows; FAILED raises TaskFailed. Only the
-        one response is returned: page through larger results with poll(), and
-        note that a Threads search, reply or timeline poll carries at most
-        1000 rows.
+        the response can still carry rows (on Bilibili, Zhihu and Baidu Tieba
+        only DONE carries rows); FAILED raises TaskFailed. Only the
+        one response is returned: page through larger results with poll()
+        (Threads polls take page and per_page, at most 1000 rows per page).
         """
         for _ in range(max_polls):
             result = self.poll(path, task_id, **query)

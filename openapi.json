@@ -1,9 +1,9 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "LargitData Social Media API: Weibo, Xiaohongshu (RedNote), Douyin, Threads",
-    "version": "2026-10-25",
-    "description": "Endpoint reference for the commercial LargitData Social Media API on Weibo, Xiaohongshu (RedNote), Douyin and Threads, written from the 2026-10-25 specification snapshot. Data is collected by web crawlers from content publicly published on each platform. Collection endpoints are asynchronous: create a task, poll it by ID, read the results once DONE. API keys are issued after a trial request: https://www.largitdata.com/en/social-media-api/#api-inquiry. Full documentation: https://api.infominer.io/docs",
+    "title": "LargitData Social Media API: Weibo, Xiaohongshu (RedNote), Douyin, Threads, Bilibili, Zhihu, Baidu Tieba",
+    "version": "2026-11-21",
+    "description": "Endpoint reference for the commercial LargitData Social Media API on Weibo, Xiaohongshu (RedNote), Douyin, Threads, Bilibili, Zhihu and Baidu Tieba, written from the 2026-10-25 specification snapshot (Bilibili, Zhihu and Baidu Tieba from the 2026-11-21 specification). Data is collected by web crawlers from content publicly published on each platform. Collection endpoints are asynchronous: create a task, poll it by ID, read the results once DONE. API keys are issued after a trial request: https://www.largitdata.com/en/social-media-api/#api-inquiry. Full documentation: https://api.infominer.io/docs",
     "contact": {
       "name": "LargitData",
       "url": "https://www.largitdata.com/en/social-media-api/"
@@ -46,6 +46,24 @@
       "name": "Threads",
       "externalDocs": {
         "url": "https://www.largitdata.com/developers/social-media-api/threads/"
+      }
+    },
+    {
+      "name": "Bilibili",
+      "externalDocs": {
+        "url": "https://www.largitdata.com/developers/social-media-api/bilibili/"
+      }
+    },
+    {
+      "name": "Zhihu",
+      "externalDocs": {
+        "url": "https://www.largitdata.com/developers/social-media-api/zhihu/"
+      }
+    },
+    {
+      "name": "Baidu Tieba",
+      "externalDocs": {
+        "url": "https://www.largitdata.com/developers/social-media-api/tieba/"
       }
     }
   ],
@@ -1768,6 +1786,7 @@
                 "properties": {
                   "post_url": {
                     "type": "string",
+                    "format": "uri",
                     "description": "URL of the post."
                   }
                 },
@@ -1830,15 +1849,23 @@
                 "type": "object",
                 "properties": {
                   "account_username": {
-                    "type": "string",
+                    "type": [
+                      "string",
+                      "null"
+                    ],
                     "description": "Optional account username."
                   },
                   "end_date": {
-                    "type": "string",
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "format": "date",
                     "description": "End date, inclusive; must not precede start_date."
                   },
                   "keyword": {
                     "type": "string",
+                    "minLength": 1,
                     "description": "Search keyword."
                   },
                   "mask_author": {
@@ -1856,7 +1883,11 @@
                     "description": "Re-POST the same input to run a fresh task."
                   },
                   "start_date": {
-                    "type": "string",
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "format": "date",
                     "description": "Start date, inclusive (YYYY-MM-DD)."
                   }
                 },
@@ -1993,6 +2024,7 @@
                   },
                   "post_url": {
                     "type": "string",
+                    "minLength": 1,
                     "description": "Threads post URL."
                   },
                   "rerun": {
@@ -2124,10 +2156,15 @@
                 "properties": {
                   "author_id": {
                     "type": "string",
+                    "minLength": 1,
                     "description": "Account username; an optional leading @ is removed."
                   },
                   "end_date": {
-                    "type": "string",
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "format": "date",
                     "description": "End date, inclusive; must not precede start_date."
                   },
                   "mask_author": {
@@ -2144,7 +2181,11 @@
                     "description": "Re-POST the same input to run a fresh task."
                   },
                   "start_date": {
-                    "type": "string",
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "format": "date",
                     "description": "Start date, inclusive (YYYY-MM-DD)."
                   }
                 },
@@ -2375,6 +2416,984 @@
           }
         ],
         "description": "Response fields: task: status, post_id, view_count, like_count, share_count, total, completed; data: id, post_id, type, author, author_id, updated_at; pagination: page, per_page, total_count, total_pages, has_next, has_prev; error_message."
+      }
+    },
+    "/bilibili/search/task": {
+      "post": {
+        "tags": [
+          "Bilibili"
+        ],
+        "summary": "Create a video keyword search task with an optional date range and page limit.",
+        "operationId": "postBilibiliSearchTask",
+        "security": [
+          {
+            "authHeader": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Unprocessable"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "502": {
+            "description": "Upstream error"
+          },
+          "503": {
+            "description": "Unavailable"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "end_date": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "format": "date",
+                    "description": "End date, inclusive (YYYY-MM-DD, UTC+8). Defaults to today."
+                  },
+                  "keyword": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100,
+                    "description": "Search keyword, 1 to 100 characters."
+                  },
+                  "max_pages": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "default": 50,
+                    "maximum": 50,
+                    "description": "Maximum result pages; 0 or omitted uses the default. 20 videos per page."
+                  },
+                  "rerun": {
+                    "type": "boolean",
+                    "description": "Accepted for consistency with other platforms; every POST creates a new task."
+                  },
+                  "start_date": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "format": "date",
+                    "description": "Start date, inclusive (YYYY-MM-DD, UTC+8). Defaults to 7 days ago."
+                  }
+                },
+                "required": [
+                  "keyword"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bilibili/search/task/{task_id}": {
+      "get": {
+        "tags": [
+          "Bilibili"
+        ],
+        "summary": "Poll the search task; once DONE it returns the videos and total_count, up to 100 per page.",
+        "operationId": "getBilibiliSearchTaskTaskId",
+        "security": [
+          {
+            "authHeader": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Unprocessable"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "502": {
+            "description": "Upstream error"
+          },
+          "503": {
+            "description": "Unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "description": "Task ID returned when the task was created.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "Page number, starting at 1.",
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "description": "Videos per page, max 100.",
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        ],
+        "description": "Response fields: id, url, title, content, tm, datetime, tm_crawler, tm_update, author, author_id, type, ctype, source, sentiment, view_count, like_count, comment_count, metadata_img."
+      }
+    },
+    "/bilibili/pushs/task": {
+      "post": {
+        "tags": [
+          "Bilibili"
+        ],
+        "summary": "Create a comment task from a /video/BV... URL, optionally with replies.",
+        "operationId": "postBilibiliPushsTask",
+        "security": [
+          {
+            "authHeader": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Unprocessable"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "502": {
+            "description": "Upstream error"
+          },
+          "503": {
+            "description": "Unavailable"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "crawl_second_layer": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Also collect the replies under each comment."
+                  },
+                  "max_pages": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "default": 50,
+                    "maximum": 200,
+                    "description": "Maximum pages of top-level comments; 0 or omitted uses the default."
+                  },
+                  "post_url": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "Bilibili video URL, https://www.bilibili.com/video/BV.../ (tracking parameters allowed). av URLs and b23.tv short links are not accepted."
+                  },
+                  "rerun": {
+                    "type": "boolean",
+                    "description": "Accepted for consistency with other platforms; every POST creates a new task."
+                  }
+                },
+                "required": [
+                  "post_url"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bilibili/pushs/task/{task_id}": {
+      "get": {
+        "tags": [
+          "Bilibili"
+        ],
+        "summary": "Poll the comment task; once DONE it returns the comments, up to 1000 per page.",
+        "operationId": "getBilibiliPushsTaskTaskId",
+        "security": [
+          {
+            "authHeader": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Unprocessable"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "502": {
+            "description": "Upstream error"
+          },
+          "503": {
+            "description": "Unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "description": "Task ID returned when the task was created.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "Page number, starting at 1.",
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "description": "Comments per page, max 1000.",
+            "schema": {
+              "type": "integer",
+              "default": 1000,
+              "minimum": 1,
+              "maximum": 1000
+            }
+          }
+        ],
+        "description": "Response fields: id, post_id, author_id, author, push_type, region, content, tm, tm_crawler, sentiment."
+      }
+    },
+    "/zhihu/search/task": {
+      "post": {
+        "tags": [
+          "Zhihu"
+        ],
+        "summary": "Create a keyword search task over answers and column articles, with an optional date range and page limit.",
+        "operationId": "postZhihuSearchTask",
+        "security": [
+          {
+            "authHeader": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Unprocessable"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "502": {
+            "description": "Upstream error"
+          },
+          "503": {
+            "description": "Unavailable"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "end_date": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "format": "date",
+                    "description": "End date, inclusive (YYYY-MM-DD, UTC+8). Defaults to today."
+                  },
+                  "keyword": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100,
+                    "description": "Search keyword, 1 to 100 characters."
+                  },
+                  "max_pages": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "default": 20,
+                    "maximum": 50,
+                    "description": "Maximum result pages; 0 or omitted uses the default. About 20 items per page."
+                  },
+                  "rerun": {
+                    "type": "boolean",
+                    "description": "Accepted for consistency with other platforms; every POST creates a new task."
+                  },
+                  "start_date": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "format": "date",
+                    "description": "Start date, inclusive (YYYY-MM-DD, UTC+8). Defaults to 7 days ago."
+                  }
+                },
+                "required": [
+                  "keyword"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/zhihu/search/task/{task_id}": {
+      "get": {
+        "tags": [
+          "Zhihu"
+        ],
+        "summary": "Poll the search task; once DONE it returns the items and total_count, up to 100 per page.",
+        "operationId": "getZhihuSearchTaskTaskId",
+        "security": [
+          {
+            "authHeader": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Unprocessable"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "502": {
+            "description": "Upstream error"
+          },
+          "503": {
+            "description": "Unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "description": "Task ID returned when the task was created.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "Page number, starting at 1.",
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "description": "Items per page, max 100.",
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        ],
+        "description": "Response fields: id, url, title, content, tm, datetime, tm_crawler, tm_update, author, author_id, type, ctype, source, sentiment, region, like_count, comment_count, metadata_img."
+      }
+    },
+    "/zhihu/pushs/task": {
+      "post": {
+        "tags": [
+          "Zhihu"
+        ],
+        "summary": "Create a task from a question, answer or column-article URL: answers for a question, comments for an answer or article.",
+        "operationId": "postZhihuPushsTask",
+        "security": [
+          {
+            "authHeader": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Unprocessable"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "502": {
+            "description": "Upstream error"
+          },
+          "503": {
+            "description": "Unavailable"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "crawl_second_layer": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Second layer: for an answer or article, the replies under each comment. For a question, the first comment page of each answer is collected but belongs to that answer, so it is not in the question task's data."
+                  },
+                  "max_pages": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "default": 20,
+                    "maximum": 200,
+                    "description": "Maximum first-layer pages (answers for a question, 20 per page; top-level comments for an answer or article, 10 per page); 0 or omitted uses the default."
+                  },
+                  "post_url": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "Zhihu question URL https://www.zhihu.com/question/{id}, answer URL .../question/{id}/answer/{id}, or column-article URL https://zhuanlan.zhihu.com/p/{id}. The query string is removed."
+                  },
+                  "rerun": {
+                    "type": "boolean",
+                    "description": "Accepted for consistency with other platforms; every POST creates a new task."
+                  }
+                },
+                "required": [
+                  "post_url"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/zhihu/pushs/task/{task_id}": {
+      "get": {
+        "tags": [
+          "Zhihu"
+        ],
+        "summary": "Poll the task; once DONE it returns the answers or comments, up to 1000 per page.",
+        "operationId": "getZhihuPushsTaskTaskId",
+        "security": [
+          {
+            "authHeader": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Unprocessable"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "502": {
+            "description": "Upstream error"
+          },
+          "503": {
+            "description": "Unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "description": "Task ID returned when the task was created.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "Page number, starting at 1.",
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "description": "Answers or comments per page, max 1000.",
+            "schema": {
+              "type": "integer",
+              "default": 1000,
+              "minimum": 1,
+              "maximum": 1000
+            }
+          }
+        ],
+        "description": "Response fields: id, post_id, author_id, author, push_type, region, content, tm, tm_crawler, sentiment."
+      }
+    },
+    "/tieba/search/task": {
+      "post": {
+        "tags": [
+          "Baidu Tieba"
+        ],
+        "summary": "Create a thread keyword search task with an optional date range and page limit.",
+        "operationId": "postTiebaSearchTask",
+        "security": [
+          {
+            "authHeader": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Unprocessable"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "502": {
+            "description": "Upstream error"
+          },
+          "503": {
+            "description": "Unavailable"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "end_date": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "format": "date",
+                    "description": "End date, inclusive (YYYY-MM-DD, UTC+8). Defaults to today."
+                  },
+                  "keyword": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100,
+                    "description": "Search keyword, 1 to 100 characters."
+                  },
+                  "max_pages": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "default": 31,
+                    "maximum": 31,
+                    "description": "Maximum result pages; 0 or omitted uses the default. 20 threads per page."
+                  },
+                  "rerun": {
+                    "type": "boolean",
+                    "description": "Accepted for consistency with other platforms; every POST creates a new task."
+                  },
+                  "start_date": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "format": "date",
+                    "description": "Start date, inclusive (YYYY-MM-DD, UTC+8). Defaults to 7 days ago."
+                  }
+                },
+                "required": [
+                  "keyword"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tieba/search/task/{task_id}": {
+      "get": {
+        "tags": [
+          "Baidu Tieba"
+        ],
+        "summary": "Poll the search task; once DONE it returns the threads and total_count, up to 100 per page.",
+        "operationId": "getTiebaSearchTaskTaskId",
+        "security": [
+          {
+            "authHeader": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Unprocessable"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "502": {
+            "description": "Upstream error"
+          },
+          "503": {
+            "description": "Unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "description": "Task ID returned when the task was created.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "Page number, starting at 1.",
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "description": "Threads per page, max 100.",
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        ],
+        "description": "Response fields: id, url, title, content, tm, datetime, tm_crawler, tm_update, author, author_id, type, ctype, source, sentiment, region, comment_count, like_count, share_count, metadata_img, metadata_videos."
+      }
+    },
+    "/tieba/pushs/task": {
+      "post": {
+        "tags": [
+          "Baidu Tieba"
+        ],
+        "summary": "Create a reply task from a thread URL: floors from the second on, optionally with in-floor replies.",
+        "operationId": "postTiebaPushsTask",
+        "security": [
+          {
+            "authHeader": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Unprocessable"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "502": {
+            "description": "Upstream error"
+          },
+          "503": {
+            "description": "Unavailable"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "crawl_second_layer": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Also collect the in-floor replies under each floor."
+                  },
+                  "max_pages": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "default": 100,
+                    "maximum": 500,
+                    "description": "Maximum pages of floors, 30 floors per page; 0 or omitted uses the default."
+                  },
+                  "post_url": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "Tieba thread URL, https://tieba.baidu.com/p/{thread id} (m.tieba.baidu.com is also accepted)."
+                  },
+                  "rerun": {
+                    "type": "boolean",
+                    "description": "Accepted for consistency with other platforms; every POST creates a new task."
+                  }
+                },
+                "required": [
+                  "post_url"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tieba/pushs/task/{task_id}": {
+      "get": {
+        "tags": [
+          "Baidu Tieba"
+        ],
+        "summary": "Poll the reply task; once DONE it returns the floors and replies, up to 1000 per page.",
+        "operationId": "getTiebaPushsTaskTaskId",
+        "security": [
+          {
+            "authHeader": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Unprocessable"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "502": {
+            "description": "Upstream error"
+          },
+          "503": {
+            "description": "Unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "description": "Task ID returned when the task was created.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "Page number, starting at 1.",
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "description": "Floors and replies per page, max 1000.",
+            "schema": {
+              "type": "integer",
+              "default": 1000,
+              "minimum": 1,
+              "maximum": 1000
+            }
+          }
+        ],
+        "description": "Response fields: id, post_id, author_id, author, push_type, region, content, tm, tm_crawler, sentiment."
       }
     }
   }

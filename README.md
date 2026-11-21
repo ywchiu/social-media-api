@@ -1,8 +1,9 @@
-# Social Media Data API: Weibo, Xiaohongshu (RedNote), Douyin, Threads
+# Social Media Data API: Weibo, Xiaohongshu (RedNote), Douyin, Threads, Bilibili, Zhihu, Baidu Tieba
 
 Code examples and an OpenAPI description for the [LargitData Social Media API](https://www.largitdata.com/en/social-media-api/),
 which returns public posts, comments, reposts and account timelines as JSON from **Weibo (微博)**,
-**Xiaohongshu (RedNote, 小红书)**, **Douyin (抖音)** and **Threads**. Weibo data is also available with
+**Xiaohongshu (RedNote, 小红书)**, **Douyin (抖音)**, **Threads**, **Bilibili (哔哩哔哩)**, **Zhihu (知乎)**
+and **Baidu Tieba (百度贴吧)**. Weibo data is also available with
 **English machine translation** through a keyword subscription. PTT, Dcard, X, Reddit, Facebook and
 Instagram are available through account-configured channels; ask us.
 
@@ -57,16 +58,25 @@ Each link goes to a page with parameters, response fields, curl and Python examp
 | [Threads replies API](https://www.largitdata.com/developers/social-media-api/threads/replies/) | `POST /threads/pushs/task`, `GET /threads/pushs/task/{task_id}` |
 | [Threads user timeline API](https://www.largitdata.com/developers/social-media-api/threads/user-timeline/) | `POST /threads/users/task`, `GET /threads/users/task/{task_id}` |
 | [Threads reactions API](https://www.largitdata.com/developers/social-media-api/threads/reactions/) | `POST /threads/reactions/task`, `GET /threads/reactions/task/{task_id}` |
+| [Bilibili video keyword search API](https://www.largitdata.com/developers/social-media-api/bilibili/keyword-search/) | `POST /bilibili/search/task`, `GET /bilibili/search/task/{task_id}` |
+| [Bilibili comments API](https://www.largitdata.com/developers/social-media-api/bilibili/comments/) | `POST /bilibili/pushs/task`, `GET /bilibili/pushs/task/{task_id}` |
+| [Zhihu keyword search API](https://www.largitdata.com/developers/social-media-api/zhihu/keyword-search/) | `POST /zhihu/search/task`, `GET /zhihu/search/task/{task_id}` |
+| [Zhihu answers and comments API](https://www.largitdata.com/developers/social-media-api/zhihu/answers-and-comments/) | `POST /zhihu/pushs/task`, `GET /zhihu/pushs/task/{task_id}` |
+| [Baidu Tieba thread search API](https://www.largitdata.com/developers/social-media-api/tieba/keyword-search/) | `POST /tieba/search/task`, `GET /tieba/search/task/{task_id}` |
+| [Baidu Tieba replies API](https://www.largitdata.com/developers/social-media-api/tieba/replies/) | `POST /tieba/pushs/task`, `GET /tieba/pushs/task/{task_id}` |
 
 Platform references: [Weibo](https://www.largitdata.com/developers/social-media-api/weibo/) ·
 [Xiaohongshu](https://www.largitdata.com/developers/social-media-api/xiaohongshu/) ·
 [Douyin](https://www.largitdata.com/developers/social-media-api/douyin/) ·
-[Threads](https://www.largitdata.com/developers/social-media-api/threads/). Full documentation: https://api.infominer.io/docs
+[Threads](https://www.largitdata.com/developers/social-media-api/threads/) ·
+[Bilibili](https://www.largitdata.com/developers/social-media-api/bilibili/) ·
+[Zhihu](https://www.largitdata.com/developers/social-media-api/zhihu/) ·
+[Baidu Tieba](https://www.largitdata.com/developers/social-media-api/tieba/). Full documentation: https://api.infominer.io/docs
 
 ## Files
 
 - [`openapi.json`](openapi.json): OpenAPI 3.1 description of the Weibo, Xiaohongshu, Douyin and Threads
-  endpoints (2026-10-25 specification snapshot).
+  endpoints (2026-10-25 specification snapshot) and the Bilibili, Zhihu and Baidu Tieba endpoints (2026-11-21).
 - [`examples/`](examples/): runnable Python scripts (`pip install -r examples/requirements.txt`,
   then `export LARGITDATA_API_KEY=...`).
 - [`postman_collection.json`](postman_collection.json): a Postman collection (v2.1) with every endpoint;
@@ -86,6 +96,11 @@ Platform references: [Weibo](https://www.largitdata.com/developers/social-media-
   identity fields. This is a crawler-based service, not Meta's official Threads API.
 - Weibo English translation backfills the last 30 days for subscribed keywords; arbitrary posts are not
   translated on demand.
+- Bilibili, Zhihu and Baidu Tieba tasks carry `task`, `total_count` and `data` only once `DONE`; other statuses
+  return the task object alone. One Bilibili search reaches about 1,000 videos, and a comment task collects at
+  most a video's 3 most popular top-level comments and 20 replies under each. Zhihu search covers answers and
+  column articles and is not exhaustive. One Tieba search reaches about 620 threads (`depth_capped` tells you
+  when the date range was cut short); in-floor replies are capped at 600 per floor.
 - How far back data goes, volume and refresh frequency are confirmed per project.
 
 ## About
