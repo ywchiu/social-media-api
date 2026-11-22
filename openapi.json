@@ -256,7 +256,7 @@
                   "get_all": {
                     "type": "boolean",
                     "default": false,
-                    "description": "Turn off the duplicate check and collect every comment."
+                    "description": "Turn off the duplicate check."
                   },
                   "order_type": {
                     "type": "string",
@@ -1107,7 +1107,7 @@
                   "get_all": {
                     "type": "boolean",
                     "default": false,
-                    "description": "Turn off the duplicate check and collect every comment."
+                    "description": "Turn off the duplicate check."
                   },
                   "order_type": {
                     "type": "string",
