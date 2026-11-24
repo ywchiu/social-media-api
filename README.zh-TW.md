@@ -69,6 +69,10 @@ curl "https://api.infominer.io/api/v2/xhs/search/task/$TASK_ID?page=1&pageSize=1
 }
 ```
 
+### Apify Actor
+
+也可以在 Apify 上執行：[apify.com/largitdata/social-media-api](https://apify.com/largitdata/social-media-api)。填入自己的 API 金鑰，結果會存成 Apify dataset，可匯出 CSV、Excel 或 JSON。
+
 ### Python client
 
 ```bash

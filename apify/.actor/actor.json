@@ -1,7 +1,7 @@
 {
   "actorSpecification": 1,
   "name": "social-media-api",
-  "title": "Weibo, Xiaohongshu, Douyin, Threads, Bilibili, Zhihu & Tieba Data",
+  "title": "Weibo, Xiaohongshu, Douyin, Threads, Bilibili, Zhihu, Tieba",
   "description": "Collect public posts, comments and account timelines from Weibo, Xiaohongshu (RedNote), Douyin, Threads, Bilibili, Zhihu and Baidu Tieba as JSON, using your LargitData Social Media Data API key.",
   "version": "0.1",
   "buildTag": "latest",

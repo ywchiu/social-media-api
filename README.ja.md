@@ -68,6 +68,7 @@ curl "https://api.infominer.io/api/v2/weibo/search/task/$TASK_ID?page=1&pageSize
 - [`openapi.json`](openapi.json)：Weibo・小紅書・抖音・Threads エンドポイントの OpenAPI 3.1 定義（2026-10-25 仕様スナップショット）と、ビリビリ・知乎・百度貼吧のエンドポイント（2026-11-21 時点の仕様）
 - [`examples/`](examples/)：Python のサンプル（`pip install -r examples/requirements.txt` の後、
   `export LARGITDATA_API_KEY=...` を設定して実行）
+- [`apify/`](apify/)：同じ API を Apify Actor として公開（[apify.com/largitdata/social-media-api](https://apify.com/largitdata/social-media-api)）。ご自身の API キーで実行し、結果を Apify の dataset に保存します。
 
 ## 知っておきたい制限
 

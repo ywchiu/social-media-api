@@ -143,6 +143,7 @@ Platform references: [Weibo](https://www.largitdata.com/developers/social-media-
 - [`postman_collection.json`](postman_collection.json): a Postman collection (v2.1) with every endpoint;
   import it and set the `api_key` collection variable.
 - [`python/`](python/): `largitdata-social`, a small Python client (create a task, wait for it, read rows).
+- [`apify/`](apify/): the same API as an Apify Actor, published at [apify.com/largitdata/social-media-api](https://apify.com/largitdata/social-media-api); runs with your own API key and saves rows to an Apify dataset.
 
 ## Limits worth knowing
 
