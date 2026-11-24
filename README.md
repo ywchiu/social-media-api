@@ -7,31 +7,13 @@ and **Baidu Tieba (百度贴吧)**. Weibo data is also available with
 **English machine translation** through a keyword subscription. PTT, Dcard, X, Reddit, Facebook and
 Instagram are available through account-configured channels; ask us.
 
-[繁體中文](README.zh-TW.md) · [日本語](README.ja.md)
+[日本語](README.ja.md)
 
-- Data is collected by web crawlers from content publicly published on each platform. LargitData is not
-  affiliated with any of these platforms, and this is not any platform's own API. Whether it suits your
-  use depends on the purpose and jurisdiction and is for your legal team to assess; we can describe sources
-  and collection methods.
+- LargitData is not affiliated with any of these platforms, and this is not any platform's own API.
 - This is a commercial API. Keys are issued after a trial request:
   **[request a trial](https://www.largitdata.com/en/social-media-api/#api-inquiry)**.
 - Besides the API, LargitData can monitor, clean, translate and backfill the data and deliver it into your
   systems as a service.
-
-## What you can collect
-
-| Platform | Keyword search | Comments / replies | Account timeline | Also |
-|---|---|---|---|---|
-| Weibo (微博) | Posts | Comments, with second-layer replies | Yes | Reposts and repost-chain tracing (depth up to 10); English keyword subscription with machine translation |
-| Xiaohongshu (RedNote, 小红书) | Notes | Comments, with second-layer replies | Yes | |
-| Douyin (抖音) | Videos | Comments (50 per video by default, adjustable) | Yes | |
-| Threads | Posts | Replies | Yes | Post reactions with view, like and share counts |
-| Bilibili (哔哩哔哩) | Videos (about 1,000 per query) | Top 3 comments and 20 replies under each | | |
-| Zhihu (知乎) | Answers and column articles | Answers to a question; comments and replies | | |
-| Baidu Tieba (百度贴吧) | Threads (about 620 per query) | Floors and in-floor replies | | |
-
-Kuaishou (快手) video search and comments, and WeChat Official Account (微信公众号) articles, can also be
-collected; their endpoint reference comes with the trial and is not in this repository.
 
 ## How it works
 
@@ -50,52 +32,6 @@ curl -X POST https://api.infominer.io/api/v2/weibo/search/task \
 
 curl "https://api.infominer.io/api/v2/weibo/search/task/$TASK_ID?page=1&pageSize=100" \
   -H "auth-header: $LARGITDATA_API_KEY"
-```
-
-A finished Xiaohongshu note search looks like this (sample values):
-
-```json
-{
-  "keyword": "护肤日常",
-  "status": "DONE",
-  "total_count": 2,
-  "task": {"id": "00000000-0000-4000-8000-000000000001", "status": "DONE"},
-  "data": [
-    {
-      "source": "xhs_note",
-      "platform": "rednote",
-      "url": "https://www.xiaohongshu.com/explore/000000000000000000000001",
-      "mblogid": "000000000000000000000001",
-      "content": "换季之后我把早晚的护肤步骤简化成四步，记录一下这个月的肤况 #护肤日常",
-      "author": "sample_user_1",
-      "author_id": "0000000000000001",
-      "tm": 1781056800,
-      "metadata_tags": ["护肤日常", "换季保养"],
-      "like_count": 120,
-      "comment_count": 14,
-      "share_count": 6
-    }
-  ]
-}
-```
-
-Field lists for every endpoint are on the capability pages linked below.
-
-### Python client
-
-```bash
-pip install "git+https://github.com/ywchiu/social-media-api#subdirectory=python"
-export LARGITDATA_API_KEY=...
-```
-
-```python
-from largitdata_social import Client
-
-client = Client()  # reads LARGITDATA_API_KEY
-task = client.create("/xhs/search/task", keyword="护肤日常", start_date="2026-06-01", end_date="2026-06-30", max_pages=3)
-result = client.wait("/xhs/search/task", task["id"], page=1, pageSize=100)
-for row in result.get("data", []):
-    print(row["url"], row.get("like_count"), (row.get("content") or "")[:60])
 ```
 
 ## Endpoints by capability
@@ -143,7 +79,6 @@ Platform references: [Weibo](https://www.largitdata.com/developers/social-media-
 - [`postman_collection.json`](postman_collection.json): a Postman collection (v2.1) with every endpoint;
   import it and set the `api_key` collection variable.
 - [`python/`](python/): `largitdata-social`, a small Python client (create a task, wait for it, read rows).
-- [`apify/`](apify/): the same API as an Apify Actor, published at [apify.com/largitdata/social-media-api](https://apify.com/largitdata/social-media-api); runs with your own API key and saves rows to an Apify dataset.
 
 ## Limits worth knowing
 
@@ -155,7 +90,7 @@ Platform references: [Weibo](https://www.largitdata.com/developers/social-media-
   readable while the task is still `RUNNING`, paged with `page` and `per_page` (max 1000; the bundled 2026-10-25 OpenAPI
   file still describes these polls as status-only). Reactions tasks return the post's view, like and share counts
   and a paginated reactions list (`per_page` up to 1000) when they complete; `mask_author` removes author
-  identity fields. This is a crawler-based service, not Meta's official Threads API.
+  identity fields. This is not Meta's official Threads API.
 - Weibo English translation backfills the last 30 days for subscribed keywords; arbitrary posts are not
   translated on demand.
 - Bilibili, Zhihu and Baidu Tieba tasks carry `task`, `total_count` and `data` only once `DONE`; other statuses
@@ -164,30 +99,6 @@ Platform references: [Weibo](https://www.largitdata.com/developers/social-media-
   column articles and is not exhaustive. One Tieba search reaches about 620 threads (`depth_capped` tells you
   when the date range was cut short); in-floor replies are capped at 600 per floor.
 - How far back data goes, volume and refresh frequency are confirmed per project.
-
-## FAQ
-
-**Is this the official Weibo, Xiaohongshu, Douyin or Threads API?**
-No. LargitData collects content that is publicly published on each platform with web crawlers and returns it
-through its own API. It is not affiliated with any of the platforms.
-
-**Can I get Xiaohongshu (RedNote) note comments as JSON?**
-Yes. `POST /xhs/pushs/task` with a note URL collects its comments, optionally with second-layer replies;
-`POST /xhs/search/task` searches notes by keyword.
-
-**Can I read Weibo posts in English?**
-Subscribe English keywords: the system maps them to Chinese search terms, backfills the last 30 days of
-matching posts and returns them with English machine translation. Arbitrary posts are not translated on demand.
-
-**Is Douyin the same as TikTok?**
-No. Douyin (抖音) is the app used in mainland China and has its own content. This API covers Douyin, not TikTok.
-
-**How far back does the data go, and how fresh is it?**
-History, volume and refresh frequency are confirmed for each project when you request a trial.
-
-**Can you deliver the data instead of me calling the API?**
-Yes. LargitData can monitor keywords and accounts, clean and translate the data, backfill history and deliver
-it into your systems as a managed service.
 
 ## About
 

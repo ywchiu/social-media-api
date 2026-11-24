@@ -2,10 +2,8 @@
 
 The API is asynchronous: POST creates a collection task, GET polls it until the
 status leaves INIT / RUNNING, and the finished task carries the rows. This
-Actor runs that loop and saves the rows to the default dataset.
-
-Data is collected by LargitData with web crawlers from publicly published
-content; it is not any platform's official API. Users bring their own key.
+Actor runs that loop and saves the rows to the default dataset. It is not any
+platform's official API; users bring their own key.
 """
 import asyncio
 import os

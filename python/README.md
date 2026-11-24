@@ -2,8 +2,7 @@
 
 Python client for the LargitData Social Media Data API (Weibo, Xiaohongshu / RedNote, Douyin, Threads,
 Bilibili, Zhihu, Baidu Tieba).
-Data is collected by web crawlers from content publicly published on each platform; this is not any
-platform's own API. Keys are issued after a trial request: https://www.largitdata.com/en/social-media-api/#api-inquiry
+This is not any platform's own API. Keys are issued after a trial request: https://www.largitdata.com/en/social-media-api/#api-inquiry
 
 ```python
 from largitdata_social import Client

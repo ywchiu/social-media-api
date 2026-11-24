@@ -3,7 +3,7 @@
   "info": {
     "title": "LargitData Social Media API: Weibo, Xiaohongshu (RedNote), Douyin, Threads, Bilibili, Zhihu, Baidu Tieba",
     "version": "2026-11-21",
-    "description": "Endpoint reference for the commercial LargitData Social Media API on Weibo, Xiaohongshu (RedNote), Douyin, Threads, Bilibili, Zhihu and Baidu Tieba, written from the 2026-10-25 specification snapshot (Bilibili, Zhihu and Baidu Tieba from the 2026-11-21 specification). Data is collected by web crawlers from content publicly published on each platform. Collection endpoints are asynchronous: create a task, poll it by ID, read the results once DONE. API keys are issued after a trial request: https://www.largitdata.com/en/social-media-api/#api-inquiry. Full documentation: https://api.infominer.io/docs",
+    "description": "Endpoint reference for the commercial LargitData Social Media API on Weibo, Xiaohongshu (RedNote), Douyin, Threads, Bilibili, Zhihu and Baidu Tieba, written from the 2026-10-25 specification snapshot (Bilibili, Zhihu and Baidu Tieba from the 2026-11-21 specification). Collection endpoints are asynchronous: create a task, poll it by ID, read the results once DONE. API keys are issued after a trial request: https://www.largitdata.com/en/social-media-api/#api-inquiry. Full documentation: https://api.infominer.io/docs",
     "contact": {
       "name": "LargitData",
       "url": "https://www.largitdata.com/en/social-media-api/"
