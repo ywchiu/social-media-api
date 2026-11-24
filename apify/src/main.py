@@ -15,6 +15,9 @@ import httpx
 from apify import Actor
 
 BASE_URL = os.environ.get("LARGITDATA_BASE_URL", "https://api.infominer.io/api/v2").rstrip("/")
+# Single-platform Actors (apify-platforms/) set this in their Dockerfile and
+# have no platform field in their input.
+FIXED_PLATFORM = os.environ.get("LARGITDATA_PLATFORM", "").strip()
 
 PLATFORM_PATH = {
     "weibo": "weibo",
@@ -32,20 +35,64 @@ PAGE_SIZE = 100
 
 # Returned when no API key is given, so the Actor can be tried (and Apify's
 # daily health check passes) without anyone's key. Clearly marked as a sample.
-SAMPLE_RECORD = {
+SAMPLE_NOTE = {
     "sample": True,
     "note": "Sample record. Add your LargitData API key to collect real data: "
             "https://www.largitdata.com/en/social-media-api/#api-inquiry",
-    "source": "xhs_note",
-    "url": "https://www.xiaohongshu.com/explore/000000000000000000000001",
-    "content": "换季之后我把早晚的护肤步骤简化成四步，记录一下这个月的肤况 #护肤日常",
-    "author": "sample_user_1",
-    "author_id": "0000000000000001",
-    "tm": 1781056800,
-    "metadata_tags": ["护肤日常", "换季保养"],
-    "like_count": 120,
-    "comment_count": 14,
-    "share_count": 6,
+}
+# One made-up keyword-search record per platform; the values are not real posts.
+SAMPLE_RECORDS = {
+    "xiaohongshu": {
+        "source": "xhs_note",
+        "url": "https://www.xiaohongshu.com/explore/000000000000000000000001",
+        "content": "换季之后我把早晚的护肤步骤简化成四步，记录一下这个月的肤况 #护肤日常",
+        "author": "sample_user_1",
+        "author_id": "0000000000000001",
+        "tm": 1781056800,
+        "metadata_tags": ["护肤日常", "换季保养"],
+        "like_count": 120,
+        "comment_count": 14,
+        "share_count": 6,
+    },
+    "weibo": {
+        "url": "https://weibo.com/0000000001/Sample0001",
+        "content": "周末去试驾了两款新能源汽车，续航和充电速度差别比想象的大 #新能源汽车",
+        "author": "sample_user_1",
+        "author_id": "0000000001",
+        "tm": 1781056800,
+        "datetime": "2026-06-10 10:00:00",
+        "metadata_tags": ["新能源汽车"],
+        "like_count": 86,
+        "comment_count": 12,
+        "share_count": 5,
+    },
+    "douyin": {
+        "url": "https://www.douyin.com/video/0000000000000000001",
+        "post_id": "0000000000000000001",
+        "content": "第一次带全家去露营，这几样装备真的省事 #露营装备",
+        "author": "sample_user_1",
+        "tm": 1781056800,
+        "date": "2026-06-10",
+        "metadata_tags": ["露营装备"],
+        "like_count": 240,
+        "comment_count": 31,
+        "share_count": 18,
+        "video_length": 42,
+    },
+    "threads": {
+        "url": "https://www.threads.com/@sample_user_1/post/Sample00001",
+        "post_id": "Sample00001",
+        "content": "今天試了巷口新開的手搖店，珍珠奶茶半糖剛剛好",
+        "author": "sample_user_1",
+        "author_id": "0000000001",
+        "tm": 1781056800,
+        "like_count": 35,
+        "comment_count": 4,
+        "share_count": 1,
+        "is_reply": False,
+        "is_quote": False,
+        "keyword": "珍珠奶茶",
+    },
 }
 
 
@@ -55,7 +102,7 @@ class InputError(ValueError):
 
 def build_task(inp):
     """Return (path, body, paged) for the collection task the input asks for."""
-    platform = inp.get("platform") or "weibo"
+    platform = FIXED_PLATFORM or inp.get("platform") or "weibo"
     mode = inp.get("mode") or "keyword_search"
     if platform not in PLATFORM_PATH:
         raise InputError(f"Unknown platform: {platform}")
@@ -136,8 +183,11 @@ async def main():
     async with Actor:
         inp = await Actor.get_input() or {}
         api_key = (inp.get("apiKey") or "").strip()
+        platform = FIXED_PLATFORM or inp.get("platform") or "weibo"
         if not api_key:
-            await Actor.push_data([{"platform": "xiaohongshu", "mode": "keyword_search", **SAMPLE_RECORD}])
+            sample_platform = platform if platform in SAMPLE_RECORDS else "xiaohongshu"
+            await Actor.push_data([{"platform": sample_platform, "mode": "keyword_search",
+                                    **SAMPLE_NOTE, **SAMPLE_RECORDS[sample_platform]}])
             await Actor.exit(status_message="No API key given, so only a sample record was returned. "
                                             "Request a key at https://www.largitdata.com/en/social-media-api/#api-inquiry")
             return
@@ -150,7 +200,7 @@ async def main():
         max_items = int(inp.get("maxItems") or 0)
         interval = int(inp.get("pollIntervalSecs") or 15)
         deadline = asyncio.get_running_loop().time() + 60 * int(inp.get("timeoutMins") or 30)
-        extra = {"platform": inp.get("platform"), "mode": inp.get("mode")}
+        extra = {"platform": platform, "mode": inp.get("mode") or "keyword_search"}
 
         async with httpx.AsyncClient(headers={"auth-header": api_key}, timeout=60) as client:
             try:

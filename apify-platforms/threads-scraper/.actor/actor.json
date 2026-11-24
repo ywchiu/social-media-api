@@ -1,0 +1,51 @@
+{
+  "actorSpecification": 1,
+  "name": "threads-scraper",
+  "title": "Threads Scraper: Keyword Search, Replies & Timelines",
+  "description": "Collect public Threads posts by keyword, the replies to a post and public account timelines as JSON, using your LargitData Social Media Data API key.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "input": "./input_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md",
+  "storages": {
+    "dataset": {
+      "actorSpecification": 1,
+      "views": {
+        "overview": {
+          "title": "Overview",
+          "transformation": {
+            "fields": [
+              "platform",
+              "url",
+              "author",
+              "content",
+              "tm",
+              "like_count",
+              "comment_count",
+              "share_count"
+            ]
+          },
+          "display": {
+            "component": "table",
+            "properties": {
+              "url": {
+                "label": "URL",
+                "format": "link"
+              },
+              "content": {
+                "label": "Content",
+                "format": "text"
+              },
+              "tm": {
+                "label": "Posted (unix time)",
+                "format": "number"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "output": "./output_schema.json"
+}

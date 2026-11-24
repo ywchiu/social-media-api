@@ -2,7 +2,7 @@
 
 Collect public posts, comments and account timelines from seven Chinese-language platforms as JSON, and get them in an Apify dataset you can export to CSV, Excel or JSON, or pass on to your own pipeline.
 
-This Actor is a thin client for the [LargitData Social Media Data API](https://www.largitdata.com/en/social-media-api/). **You need a LargitData API key** to use it; keys are issued after a [trial request](https://www.largitdata.com/en/social-media-api/#api-inquiry). The Actor itself is free; collection is billed under your LargitData plan.
+This Actor is a thin client for the [LargitData Social Media Data API](https://www.largitdata.com/en/social-media-api/). **You need a LargitData API key** to use it; keys are issued after a [trial request](https://www.largitdata.com/en/social-media-api/#api-inquiry). The Actor itself is free; collection is billed by LargitData at USD 0.005 per record (each post or comment returned counts as one record).
 
 > LargitData collects this data with web crawlers from publicly published content. LargitData is not affiliated with any of these platforms, and this is not any platform's official API. Whether it suits your use depends on your purpose and jurisdiction; please have your own counsel assess it.
 

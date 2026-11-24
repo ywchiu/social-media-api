@@ -1,0 +1,102 @@
+{
+  "title": "Weibo data collection",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "apiKey": {
+      "title": "LargitData API key",
+      "type": "string",
+      "description": "Your LargitData Social Media Data API key, sent as the auth-header header. Without a key the Actor returns one sample record only. Keys are issued after a trial request: https://www.largitdata.com/en/social-media-api/#api-inquiry",
+      "editor": "textfield",
+      "isSecret": true
+    },
+    "mode": {
+      "title": "What to collect",
+      "type": "string",
+      "description": "Keyword search: Posts matching a keyword, optionally within a date range. Comments of a post: Comments of one post (Post URL), optionally with second-level replies. Account timeline: One account's posts (Author ID). The date range defaults to the last 30 days.",
+      "editor": "select",
+      "enum": [
+        "keyword_search",
+        "comments",
+        "user_timeline"
+      ],
+      "enumTitles": [
+        "Keyword search",
+        "Comments of a post",
+        "Account timeline"
+      ],
+      "default": "keyword_search"
+    },
+    "keyword": {
+      "title": "Keyword",
+      "type": "string",
+      "description": "Search keyword for Keyword search, in Simplified Chinese.",
+      "editor": "textfield",
+      "prefill": "新能源汽车"
+    },
+    "postUrl": {
+      "title": "Post URL",
+      "type": "string",
+      "description": "URL of the Weibo post whose comments you want.",
+      "editor": "textfield"
+    },
+    "authorId": {
+      "title": "Author ID",
+      "type": "string",
+      "description": "Account ID on Weibo (Account timeline mode).",
+      "editor": "textfield"
+    },
+    "startDate": {
+      "title": "Start date",
+      "type": "string",
+      "description": "YYYY-MM-DD. Account timeline defaults to the last 30 days when left empty.",
+      "editor": "datepicker"
+    },
+    "endDate": {
+      "title": "End date",
+      "type": "string",
+      "description": "YYYY-MM-DD.",
+      "editor": "datepicker"
+    },
+    "maxPages": {
+      "title": "Max result pages to crawl",
+      "type": "integer",
+      "description": "How deep the collector goes on the platform (max_pages). Larger values take longer.",
+      "default": 3,
+      "minimum": 1,
+      "maximum": 50
+    },
+    "includeReplies": {
+      "title": "Include second-level replies",
+      "type": "boolean",
+      "description": "Comments mode: also collect replies to comments where the platform supports it.",
+      "default": false
+    },
+    "maxItems": {
+      "title": "Max items to save",
+      "type": "integer",
+      "description": "Stop after saving this many records to the dataset. 0 means no limit.",
+      "default": 1000,
+      "minimum": 0
+    },
+    "pollIntervalSecs": {
+      "title": "Poll interval (seconds)",
+      "type": "integer",
+      "description": "How often to check whether the collection task has finished.",
+      "default": 15,
+      "minimum": 5,
+      "maximum": 120
+    },
+    "timeoutMins": {
+      "title": "Task timeout (minutes)",
+      "type": "integer",
+      "description": "Give up waiting after this long. The task keeps running on LargitData's side; re-run later to fetch it.",
+      "default": 30,
+      "minimum": 1,
+      "maximum": 240
+    }
+  },
+  "required": [
+    "mode"
+  ]
+}

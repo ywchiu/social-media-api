@@ -1,0 +1,51 @@
+{
+  "actorSpecification": 1,
+  "name": "douyin-scraper",
+  "title": "Douyin Scraper: Videos, Comments & Account Posts",
+  "description": "Collect public Douyin videos by keyword, the comments of a video and account posts as JSON, using your LargitData Social Media Data API key. Douyin is the mainland-China app, not TikTok.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "input": "./input_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md",
+  "storages": {
+    "dataset": {
+      "actorSpecification": 1,
+      "views": {
+        "overview": {
+          "title": "Overview",
+          "transformation": {
+            "fields": [
+              "platform",
+              "url",
+              "author",
+              "content",
+              "tm",
+              "like_count",
+              "comment_count",
+              "share_count"
+            ]
+          },
+          "display": {
+            "component": "table",
+            "properties": {
+              "url": {
+                "label": "URL",
+                "format": "link"
+              },
+              "content": {
+                "label": "Content",
+                "format": "text"
+              },
+              "tm": {
+                "label": "Posted (unix time)",
+                "format": "number"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "output": "./output_schema.json"
+}
