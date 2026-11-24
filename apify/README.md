@@ -22,7 +22,7 @@ Douyin is the mainland-China app; it is not TikTok, and TikTok is not covered.
 
 ## How to use it
 
-1. Paste your LargitData API key.
+1. Paste your LargitData API key. Without a key, the Actor returns one sample record (marked `"sample": true`) so you can see the output format.
 2. Pick a platform and what to collect:
    - **Keyword search**: enter a keyword in the platform's language (Simplified Chinese for most platforms) and, optionally, a date range.
    - **Comments of a post**: enter the post URL.

@@ -6,7 +6,7 @@
     "apiKey": {
       "title": "LargitData API key",
       "type": "string",
-      "description": "Your LargitData Social Media Data API key, sent as the auth-header header. Keys are issued after a trial request: https://www.largitdata.com/en/social-media-api/#api-inquiry",
+      "description": "Your LargitData Social Media Data API key, sent as the auth-header header. Without a key the Actor returns one sample record only. Keys are issued after a trial request: https://www.largitdata.com/en/social-media-api/#api-inquiry",
       "editor": "textfield",
       "isSecret": true
     },
@@ -15,8 +15,24 @@
       "type": "string",
       "description": "Which platform to collect from.",
       "editor": "select",
-      "enum": ["weibo", "xiaohongshu", "douyin", "threads", "bilibili", "zhihu", "tieba"],
-      "enumTitles": ["Weibo", "Xiaohongshu (RedNote)", "Douyin", "Threads", "Bilibili", "Zhihu", "Baidu Tieba"],
+      "enum": [
+        "weibo",
+        "xiaohongshu",
+        "douyin",
+        "threads",
+        "bilibili",
+        "zhihu",
+        "tieba"
+      ],
+      "enumTitles": [
+        "Weibo",
+        "Xiaohongshu (RedNote)",
+        "Douyin",
+        "Threads",
+        "Bilibili",
+        "Zhihu",
+        "Baidu Tieba"
+      ],
       "default": "weibo"
     },
     "mode": {
@@ -24,8 +40,16 @@
       "type": "string",
       "description": "Keyword search returns posts. Comments returns the comments/replies of one post (Post URL). Account timeline returns one account's posts (Author ID; Weibo, Xiaohongshu, Douyin and Threads only).",
       "editor": "select",
-      "enum": ["keyword_search", "comments", "user_timeline"],
-      "enumTitles": ["Keyword search", "Comments of a post", "Account timeline"],
+      "enum": [
+        "keyword_search",
+        "comments",
+        "user_timeline"
+      ],
+      "enumTitles": [
+        "Keyword search",
+        "Comments of a post",
+        "Account timeline"
+      ],
       "default": "keyword_search"
     },
     "keyword": {
@@ -97,5 +121,8 @@
       "maximum": 240
     }
   },
-  "required": ["apiKey", "platform", "mode"]
+  "required": [
+    "platform",
+    "mode"
+  ]
 }

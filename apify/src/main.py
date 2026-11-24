@@ -30,6 +30,24 @@ TIMELINE_PLATFORMS = {"weibo", "xiaohongshu", "douyin", "threads"}
 PAGED_COMMENTS = {"bilibili", "zhihu", "tieba"}
 PAGE_SIZE = 100
 
+# Returned when no API key is given, so the Actor can be tried (and Apify's
+# daily health check passes) without anyone's key. Clearly marked as a sample.
+SAMPLE_RECORD = {
+    "sample": True,
+    "note": "Sample record. Add your LargitData API key to collect real data: "
+            "https://www.largitdata.com/en/social-media-api/#api-inquiry",
+    "source": "xhs_note",
+    "url": "https://www.xiaohongshu.com/explore/000000000000000000000001",
+    "content": "换季之后我把早晚的护肤步骤简化成四步，记录一下这个月的肤况 #护肤日常",
+    "author": "sample_user_1",
+    "author_id": "0000000000000001",
+    "tm": 1781056800,
+    "metadata_tags": ["护肤日常", "换季保养"],
+    "like_count": 120,
+    "comment_count": 14,
+    "share_count": 6,
+}
+
 
 class InputError(ValueError):
     pass
@@ -119,7 +137,9 @@ async def main():
         inp = await Actor.get_input() or {}
         api_key = (inp.get("apiKey") or "").strip()
         if not api_key:
-            await Actor.fail(status_message="Missing LargitData API key.")
+            await Actor.push_data([{"platform": "xiaohongshu", "mode": "keyword_search", **SAMPLE_RECORD}])
+            await Actor.exit(status_message="No API key given, so only a sample record was returned. "
+                                            "Request a key at https://www.largitdata.com/en/social-media-api/#api-inquiry")
             return
         try:
             path, body, paged = build_task(inp)
