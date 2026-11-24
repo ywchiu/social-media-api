@@ -8,7 +8,6 @@ PTT、Dcard、X、Reddit、Facebook、Instagram はアカウント単位の設�
 
 [English](README.md)
 
-- 当社はこれらのプラットフォームと提携しておらず、各プラットフォーム自身が提供する API ではありません。
 - 商用 API です。API キーはトライアル申込後に発行します：**[トライアルを申し込む](https://www.largitdata.com/ja/social-media-api/#api-inquiry)**
 
 ## 仕組み
@@ -75,8 +74,7 @@ curl "https://api.infominer.io/api/v2/weibo/search/task/$TASK_ID?page=1&pageSize
 - Weibo のリポストチェーンは深さ 10 まで追跡できます（既定は 3）。
 - Threads の検索・返信・タイムラインのタスクは、ポーリングで収集済みの行を `data` に、件数を `total_count` に返し、
   タスクが `RUNNING` の間も読み取れます。reactions タスクは完了時に投稿の閲覧数・いいね数・シェア数と、ページ分割された
-  reactions 一覧（`per_page` は最大 1000）を返します。`mask_author` で投稿者の識別情報を除外できます。Meta 公式の
-  Threads API ではありません。
+  reactions 一覧（`per_page` は最大 1000）を返します。`mask_author` で投稿者の識別情報を除外できます。
 - Weibo の英語翻訳は購読キーワードについて直近 30 日分をさかのぼって取得します。任意の投稿をその場で翻訳する機能ではありません。
 - ビリビリ、知乎、百度貼吧のタスクは `DONE` のときだけ `task`、`total_count`、`data` を返し、それ以外はタスクオブジェクトのみを返します。
   ビリビリの検索は 1 回約 1,000 本まで、コメントタスクは動画の人気上位 3 件の第 1 階層コメントとそれぞれの返信 20 件までです。

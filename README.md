@@ -9,7 +9,6 @@ Instagram are available through account-configured channels; ask us.
 
 [日本語](README.ja.md)
 
-- LargitData is not affiliated with any of these platforms, and this is not any platform's own API.
 - This is a commercial API. Keys are issued after a trial request:
   **[request a trial](https://www.largitdata.com/en/social-media-api/#api-inquiry)**.
 - Besides the API, LargitData can monitor, clean, translate and backfill the data and deliver it into your
@@ -90,7 +89,7 @@ Platform references: [Weibo](https://www.largitdata.com/developers/social-media-
   readable while the task is still `RUNNING`, paged with `page` and `per_page` (max 1000; the bundled 2026-10-25 OpenAPI
   file still describes these polls as status-only). Reactions tasks return the post's view, like and share counts
   and a paginated reactions list (`per_page` up to 1000) when they complete; `mask_author` removes author
-  identity fields. This is not Meta's official Threads API.
+  identity fields.
 - Weibo English translation backfills the last 30 days for subscribed keywords; arbitrary posts are not
   translated on demand.
 - Bilibili, Zhihu and Baidu Tieba tasks carry `task`, `total_count` and `data` only once `DONE`; other statuses

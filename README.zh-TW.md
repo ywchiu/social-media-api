@@ -6,7 +6,6 @@ API 以 JSON 回傳 **微博**、**小紅書（RedNote）**、**抖音**、**Thr
 
 [English](README.md) · [日本語](README.ja.md)
 
-- 大數軟體與這些平台沒有關係，這也不是任何平台的官方 API。
 - 這是商用 API，申請試用後發給金鑰：**[申請試用](https://www.largitdata.com/社群媒體API/#api-inquiry)**。
 - 除了 API，也可以由大數軟體代為監測、清理、翻譯、回補歷史資料，直接交付到您的系統。
 
@@ -105,9 +104,6 @@ for row in result.get("data", []):
 完整文件：https://api.infominer.io/docs
 
 ## 常見問題
-
-**這是微博、小紅書、抖音或 Threads 的官方 API 嗎？**
-不是。這是大數軟體自己的 API，與各平台沒有關係。
 
 **可以用 JSON 取得小紅書筆記的留言嗎？**
 可以。用筆記網址呼叫 `POST /xhs/pushs/task` 蒐集留言，可選擇包含第二層回覆；`POST /xhs/search/task` 則是用關鍵字搜尋筆記。
