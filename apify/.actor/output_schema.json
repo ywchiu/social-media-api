@@ -1,0 +1,18 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Collected records",
+  "properties": {
+    "records": {
+      "type": "string",
+      "title": "Records",
+      "description": "Posts, comments or timeline items returned by the collection task.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items"
+    },
+    "summary": {
+      "type": "string",
+      "title": "Run summary",
+      "description": "Task ID, final status, total_count and the number of records saved.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/OUTPUT"
+    }
+  }
+}
