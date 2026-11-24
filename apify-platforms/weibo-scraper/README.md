@@ -4,8 +4,6 @@ Collect public Weibo posts by keyword, the comments of a post and account timeli
 
 This Actor is a thin client for the [LargitData Social Media Data API](https://www.largitdata.com/developers/social-media-api/weibo/). **You need a LargitData API key** to use it; keys are issued after a [trial request](https://www.largitdata.com/en/social-media-api/#api-inquiry). The Actor itself is free; collection is billed by LargitData at USD 0.005 per record (each post or comment returned counts as one record).
 
-> LargitData collects this data with web crawlers from publicly published content. LargitData is not affiliated with Weibo, and this is not the platform's official API. Whether it suits your use depends on your purpose and jurisdiction; please have your own counsel assess it.
-
 ## What you can collect
 
 | Mode | What you get |
@@ -62,9 +60,6 @@ Each record keeps the fields the API returns, plus `platform` and `mode`. A keyw
 The full field list for every mode is on the [Weibo API page](https://www.largitdata.com/developers/social-media-api/weibo/) and in the [API reference](https://api.infominer.io/docs).
 
 ## FAQ
-
-**Is this the official Weibo API?**
-No. LargitData collects publicly published Weibo content with web crawlers and serves it through its own API. LargitData is not affiliated with Weibo.
 
 **Can I read Weibo in English?**
 The LargitData API offers English keyword subscriptions for Weibo with machine translation. That feature is not part of this Actor; see the [Weibo English data page](https://www.largitdata.com/developers/social-media-api/weibo/english-translation/).

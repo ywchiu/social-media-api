@@ -4,8 +4,6 @@ Collect public Xiaohongshu (RedNote) notes by keyword, the comments of a note an
 
 This Actor is a thin client for the [LargitData Social Media Data API](https://www.largitdata.com/developers/social-media-api/xiaohongshu/). **You need a LargitData API key** to use it; keys are issued after a [trial request](https://www.largitdata.com/en/social-media-api/#api-inquiry). The Actor itself is free; collection is billed by LargitData at USD 0.005 per record (each post or comment returned counts as one record).
 
-> LargitData collects this data with web crawlers from publicly published content. LargitData is not affiliated with Xiaohongshu, and this is not the platform's official API. Whether it suits your use depends on your purpose and jurisdiction; please have your own counsel assess it.
-
 ## What you can collect
 
 | Mode | What you get |
@@ -63,9 +61,6 @@ Each record keeps the fields the API returns, plus `platform` and `mode`. A keyw
 The full field list for every mode is on the [Xiaohongshu (RedNote) API page](https://www.largitdata.com/developers/social-media-api/xiaohongshu/) and in the [API reference](https://api.infominer.io/docs).
 
 ## FAQ
-
-**Is this the official Xiaohongshu (RedNote) API?**
-No. LargitData collects publicly published Xiaohongshu content with web crawlers and serves it through its own API. LargitData is not affiliated with Xiaohongshu.
 
 **Are Xiaohongshu, RedNote and XHS the same platform?**
 Yes. Xiaohongshu (小红书) is the platform's Chinese name, RedNote is the name used in app stores outside mainland China, and XHS is the common abbreviation.

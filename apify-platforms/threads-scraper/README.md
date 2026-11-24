@@ -4,8 +4,6 @@ Collect public Threads posts by keyword, the replies to a post and public accoun
 
 This Actor is a thin client for the [LargitData Social Media Data API](https://www.largitdata.com/developers/social-media-api/threads/). **You need a LargitData API key** to use it; keys are issued after a [trial request](https://www.largitdata.com/en/social-media-api/#api-inquiry). The Actor itself is free; collection is billed by LargitData at USD 0.005 per record (each post or comment returned counts as one record).
 
-> LargitData collects this data with web crawlers from publicly published content. LargitData is not affiliated with Threads, and this is not the platform's official API. Whether it suits your use depends on your purpose and jurisdiction; please have your own counsel assess it.
-
 ## What you can collect
 
 | Mode | What you get |
@@ -62,9 +60,6 @@ Each record keeps the fields the API returns, plus `platform` and `mode`. A keyw
 The full field list for every mode is on the [Threads API page](https://www.largitdata.com/developers/social-media-api/threads/) and in the [API reference](https://api.infominer.io/docs).
 
 ## FAQ
-
-**Is this Meta's official Threads API?**
-No. Meta's Threads API is called with a Threads user's access token. This Actor uses a separate service: LargitData collects publicly published Threads content with web crawlers and serves it through its own API. LargitData is not affiliated with Meta or Threads.
 
 **Can I get the accounts that reacted to a post?**
 Reactions are available as a separate task in the LargitData API, not in this Actor; see the [Threads page](https://www.largitdata.com/developers/social-media-api/threads/).

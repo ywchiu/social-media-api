@@ -35,9 +35,6 @@ PLATFORMS = {
         ],
         "replies": True,
         "faq": [
-            ("Is this the official Weibo API?",
-             "No. LargitData collects publicly published Weibo content with web crawlers and serves it through "
-             "its own API. LargitData is not affiliated with Weibo."),
             ("Can I read Weibo in English?",
              "The LargitData API offers English keyword subscriptions for Weibo with machine translation. That "
              f"feature is not part of this Actor; see the [Weibo English data page]({SITE}/developers/social-media-api/weibo/english-translation/)."),
@@ -63,9 +60,6 @@ PLATFORMS = {
         ],
         "replies": True,
         "faq": [
-            ("Is this the official Xiaohongshu (RedNote) API?",
-             "No. LargitData collects publicly published Xiaohongshu content with web crawlers and serves it "
-             "through its own API. LargitData is not affiliated with Xiaohongshu."),
             ("Are Xiaohongshu, RedNote and XHS the same platform?",
              "Yes. Xiaohongshu (小红书) is the platform's Chinese name, RedNote is the name used in app stores "
              "outside mainland China, and XHS is the common abbreviation."),
@@ -88,9 +82,6 @@ PLATFORMS = {
         ],
         "replies": False,
         "faq": [
-            ("Is this the official Douyin API?",
-             "No. LargitData collects publicly published Douyin content with web crawlers and serves it through "
-             "its own API. LargitData is not affiliated with Douyin or ByteDance."),
             ("Does it cover TikTok?",
              "No. Douyin is the mainland-China app. TikTok is a separate service and is not covered."),
             ("Does it download the video files?",
@@ -115,10 +106,6 @@ PLATFORMS = {
         ],
         "replies": False,
         "faq": [
-            ("Is this Meta's official Threads API?",
-             "No. Meta's Threads API is called with a Threads user's access token. This Actor uses a separate "
-             "service: LargitData collects publicly published Threads content with web crawlers and serves it "
-             "through its own API. LargitData is not affiliated with Meta or Threads."),
             ("Can I get the accounts that reacted to a post?",
              "Reactions are available as a separate task in the LargitData API, not in this Actor; see the "
              f"[Threads page]({SITE}/developers/social-media-api/threads/)."),
@@ -191,8 +178,6 @@ def readme(key, cfg, sample):
 {cfg['description'].split(', using your')[0].rstrip('.')}. Results land in an Apify dataset you can export to CSV, Excel or JSON, or pass on to your own pipeline.
 
 This Actor is a thin client for the [LargitData Social Media Data API]({cfg['page']}). **You need a LargitData API key** to use it; keys are issued after a [trial request]({TRIAL}). The Actor itself is free; collection is billed by LargitData at USD 0.005 per record (each post or comment returned counts as one record).
-
-> LargitData collects this data with web crawlers from publicly published content. LargitData is not affiliated with {cfg['label'].split(' (')[0]}, and this is not the platform's official API. Whether it suits your use depends on your purpose and jurisdiction; please have your own counsel assess it.
 
 ## What you can collect
 
