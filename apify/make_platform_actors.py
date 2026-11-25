@@ -30,16 +30,16 @@ PLATFORMS = {
         "post_noun": "posts",
         "modes": [
             ("keyword_search", "Keyword search", "Posts matching a keyword, optionally within a date range."),
-            ("comments", "Comments of a post", "Comments of one post (Post URL), optionally with second-level replies."),
-            ("user_timeline", "Account timeline", "One account's posts (Author ID). The date range defaults to the last 30 days."),
+            ("comments", "Comments of a post", "Comments on one post (Post URL), with optional second-level replies."),
+            ("user_timeline", "Account timeline", "Posts from one account (Author ID). Defaults to the last 30 days."),
         ],
         "replies": True,
         "faq": [
-            ("Can I read Weibo in English?",
-             "The LargitData API offers English keyword subscriptions for Weibo with machine translation. That "
-             f"feature is not part of this Actor; see the [Weibo English data page]({SITE}/developers/social-media-api/weibo/english-translation/)."),
-            ("Can I trace reposts?",
-             "Repost lists and repost-chain tracing are available in the LargitData API, not in this Actor; see "
+            ("Can I get Weibo data in English with translation?",
+             "Not in this Actor. The LargitData API offers English keyword subscriptions for Weibo with machine translation; "
+             f"see the [Weibo English data page]({SITE}/developers/social-media-api/weibo/english-translation/)."),
+            ("Can I trace Weibo reposts and repost chains?",
+             "Not in this Actor. Repost lists and repost-chain tracing are available in the LargitData API; see "
              f"the [Weibo reposts page]({SITE}/developers/social-media-api/weibo/reposts/)."),
         ],
     },
@@ -54,9 +54,9 @@ PLATFORMS = {
         "keyword_language": "Simplified Chinese",
         "post_noun": "notes",
         "modes": [
-            ("keyword_search", "Keyword search", "Notes matching a keyword, optionally within a date range."),
-            ("comments", "Comments of a note", "Comments of one note (Post URL), optionally with second-level replies."),
-            ("user_timeline", "Account timeline", "One account's notes (Author ID). The date range defaults to the last 30 days."),
+            ("keyword_search", "Keyword search", "Notes matching a keyword, with an optional date range."),
+            ("comments", "Comments of a note", "Comments on one note (Post URL), with optional second-level replies."),
+            ("user_timeline", "Account timeline", "Notes from one account (Author ID). Defaults to the last 30 days."),
         ],
         "replies": True,
         "faq": [
@@ -76,16 +76,16 @@ PLATFORMS = {
         "keyword_language": "Simplified Chinese",
         "post_noun": "videos",
         "modes": [
-            ("keyword_search", "Keyword search", "Videos matching a keyword, optionally within a date range."),
-            ("comments", "Comments of a video", "Comments of one video (Post URL)."),
-            ("user_timeline", "Account posts", "One account's videos (Author ID). The date range defaults to the last 30 days."),
+            ("keyword_search", "Keyword search", "Videos matching a keyword, with an optional date range."),
+            ("comments", "Comments of a video", "Comments on one video (Post URL)."),
+            ("user_timeline", "Account posts", "Videos from one account (Author ID). Defaults to the last 30 days."),
         ],
         "replies": False,
         "faq": [
-            ("Does it cover TikTok?",
+            ("Does this Douyin scraper cover TikTok?",
              "No. Douyin is the mainland-China app. TikTok is a separate service and is not covered."),
-            ("Does it download the video files?",
-             "No. The records carry the video's metadata and text. Resolving download URLs for collected videos "
+            ("Does this Douyin scraper download video files?",
+             "No. Records include video metadata and text only. Resolving download URLs for collected videos "
              f"is a separate LargitData API endpoint; see the [Douyin page]({SITE}/developers/social-media-api/douyin/)."),
         ],
     },
@@ -102,22 +102,22 @@ PLATFORMS = {
         "modes": [
             ("keyword_search", "Keyword search", "Posts matching a keyword, optionally within a date range."),
             ("comments", "Replies to a post", "Replies to one post (Post URL)."),
-            ("user_timeline", "Account timeline", "One public account's posts (Author ID), optionally within a date range."),
+            ("user_timeline", "Account timeline", "Posts from one public account (Author ID), with an optional date range."),
         ],
         "replies": False,
         "faq": [
-            ("Can I get the accounts that reacted to a post?",
-             "Reactions are available as a separate task in the LargitData API, not in this Actor; see the "
+            ("Can I collect accounts that reacted to a Threads post?",
+             "Not in this Actor. Post reactions are available as a separate task in the LargitData API; see the "
              f"[Threads page]({SITE}/developers/social-media-api/threads/)."),
         ],
     },
 }
 
 COMMON_FAQ = [
-    ("How far back does the data go?",
-     "History range, volume and refresh frequency are agreed per project when you request a trial."),
-    ("Can LargitData run the collection for me?",
-     "Yes. LargitData can monitor keywords and accounts, clean and translate the data, backfill history and "
+    ("How far back does historical data go?",
+     "Historical range, volume, and refresh frequency are set per project when you request a trial."),
+    ("Can LargitData manage data collection for me?",
+     "Yes. LargitData can monitor keywords and accounts, clean and translate data, backfill historical data, and "
      "deliver it to your systems."),
 ]
 
@@ -142,16 +142,16 @@ def input_schema(key, cfg):
     props["mode"]["enumTitles"] = [m[1] for m in cfg["modes"]]
     props["mode"]["description"] = " ".join(f"{title}: {desc}" for _, title, desc in cfg["modes"])
     props["keyword"]["prefill"] = cfg["keyword"]
-    props["keyword"]["description"] = f"Search keyword for Keyword search, in {cfg['keyword_language']}."
+    props["keyword"]["description"] = f"Query term for Keyword search mode, in {cfg['keyword_language']}."
     props["postUrl"]["description"] = f"URL of the {cfg['label']} post whose {cfg['modes'][1][1].split()[0].lower()} you want."
     props["authorId"]["description"] = f"Account ID on {cfg['label']} ({cfg['modes'][2][1]} mode)."
     if key == "threads":
         props["startDate"]["description"] = "YYYY-MM-DD. Optional."
         props["maxPages"]["title"] = "Max scroll depth"
-        props["maxPages"]["description"] = "How deep the collector scrolls on Threads (max_scroll). Larger values take longer."
+        props["maxPages"]["description"] = "Scroll depth on Threads (max_scroll). Higher values take longer."
     else:
-        props["startDate"]["description"] = "YYYY-MM-DD. Account timeline defaults to the last 30 days when left empty."
-        props["maxPages"]["description"] = "How deep the collector goes on the platform (max_pages). Larger values take longer."
+        props["startDate"]["description"] = "Start date (YYYY-MM-DD). Defaults to the last 30 days in Account timeline mode."
+        props["maxPages"]["description"] = "Page depth to collect (max_pages). Higher values take longer."
     if not cfg["replies"]:
         del props["includeReplies"]
     return schema
@@ -175,23 +175,23 @@ def readme(key, cfg, sample):
     faq = "\n\n".join(f"**{q}**\n{a}" for q, a in cfg["faq"] + COMMON_FAQ)
     return f"""# {cfg['title']}
 
-{cfg['description'].split(', using your')[0].rstrip('.')}. Results land in an Apify dataset you can export to CSV, Excel or JSON, or pass on to your own pipeline.
+{cfg['description'].split(', using your')[0].rstrip('.')}. Export results from the Apify dataset to CSV, Excel, or JSON, or send them to your data pipeline.
 
-This Actor is a thin client for the [LargitData Social Media Data API]({cfg['page']}). **You need a LargitData API key** to use it; keys are issued after a [trial request]({TRIAL}). The Actor itself is free; collection is billed by LargitData at USD 0.005 per record (each post or comment returned counts as one record).
+This Actor connects to the [LargitData Social Media Data API]({cfg['page']}). **You need a LargitData API key** to run this Actor. Get your key through a [trial request]({TRIAL}). The Actor itself is free. LargitData bills data collection at USD 0.005 per record (each returned post or comment counts as one record).
 
-## What you can collect
+## Supported data collection modes
 
 | Mode | What you get |
 |---|---|
 {modes}
 
-## How to use it
+## How to run this Actor
 
-1. Paste your LargitData API key. Without a key, the Actor returns one sample record (marked `"sample": true`) so you can see the output format.
-2. Pick what to collect and fill in the keyword, post URL or author ID.
-3. Run. The Actor creates a collection task, waits for it to finish, and saves every record to the dataset.
+1. Enter your LargitData API key. Without a key, the Actor returns one sample record (marked `"sample": true`) to preview the output format.
+2. Choose a collection mode and enter a keyword, post URL, or author ID.
+3. Start the Actor. It creates a collection task, waits for completion, and saves all records to the Apify dataset.
 
-Collection runs on LargitData's side and can take several minutes. If a task is still running when the timeout is reached, the Actor stops and writes the task ID to the `OUTPUT` record; the task keeps running and you can fetch it later.
+Collection runs on LargitData's servers and can take several minutes. If the Actor reaches its timeout, it stops and writes the task ID to the `OUTPUT` record. The task keeps running, and you can fetch the results later.
 
 ## Input example
 
@@ -201,25 +201,25 @@ Collection runs on LargitData's side and can take several minutes. If a task is 
 
 ## Output example
 
-Each record keeps the fields the API returns, plus `platform` and `mode`. A keyword-search record looks like this (sample values, not a real post):
+Each record includes all API response fields plus `platform` and `mode`. Example keyword-search record (sample values, not a real post):
 
 ```json
 {json.dumps(output_example, ensure_ascii=False, indent=2)}
 ```
 
-The full field list for every mode is on the [{cfg['label']} API page]({cfg['page']}) and in the [API reference](https://api.infominer.io/docs).
+See the complete output field list for every mode on the [{cfg['label']} API page]({cfg['page']}) and in the [API reference](https://api.infominer.io/docs).
 
 ## FAQ
 
 {faq}
 
-## Other platforms
+## Other supported social media platforms
 
-The [multi-platform Actor]({UMBRELLA}) covers Weibo, Xiaohongshu (RedNote), Douyin, Threads, Bilibili, Zhihu and Baidu Tieba with the same API key.
+Need more platforms? The [multi-platform Actor]({UMBRELLA}) supports Weibo, Xiaohongshu (RedNote), Douyin, Threads, Bilibili, Zhihu, and Baidu Tieba using the same API key.
 
-## Source code
+## Source code and Python client
 
-OpenAPI description, Python client and this Actor's source: [github.com/ywchiu/social-media-api](https://github.com/ywchiu/social-media-api)
+OpenAPI specification, Python client, and Actor source code: [github.com/ywchiu/social-media-api](https://github.com/ywchiu/social-media-api)
 
 Built by [LargitData]({SITE}/en/) (大數軟體), Taipei.
 """

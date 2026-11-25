@@ -1,33 +1,33 @@
 # Weibo, Xiaohongshu, Douyin, Threads, Bilibili, Zhihu & Tieba Data
 
-Collect public posts, comments and account timelines from seven Chinese-language platforms as JSON, and get them in an Apify dataset you can export to CSV, Excel or JSON, or pass on to your own pipeline.
+Collect public posts, comments, and account timelines from seven Chinese-language social media platforms with one scraper API Actor. Results save to an Apify dataset that you can export to CSV, Excel, or JSON, or pass into your own pipeline.
 
-This Actor is a thin client for the [LargitData Social Media Data API](https://www.largitdata.com/en/social-media-api/). **You need a LargitData API key** to use it; keys are issued after a [trial request](https://www.largitdata.com/en/social-media-api/#api-inquiry). The Actor itself is free; collection is billed by LargitData at USD 0.005 per record (each post or comment returned counts as one record).
+This Actor connects to the [LargitData Social Media Data API](https://www.largitdata.com/en/social-media-api/). **You need a LargitData API key** to use it. Keys are issued after a [trial request](https://www.largitdata.com/en/social-media-api/#api-inquiry). The Actor itself is free. LargitData bills collection at USD 0.005 per record (each returned post or comment counts as one record).
 
-## What you can collect
+## Supported platforms and data types
 
-| Platform | Keyword search | Comments of a post | Account timeline |
+| Platform | Keyword search | Post comments | Account timeline |
 |---|---|---|---|
-| Weibo | Posts | Comments, optionally with second-level replies | Yes |
-| Xiaohongshu (RedNote) | Notes | Comments, optionally with second-level replies | Yes |
+| Weibo | Posts | Comments (optional second-level replies) | Yes |
+| Xiaohongshu (RedNote) | Notes | Comments (optional second-level replies) | Yes |
 | Douyin | Videos | Comments | Yes |
 | Threads | Posts | Replies | Yes |
-| Bilibili | Videos | Top comments with replies | |
-| Zhihu | Answers and articles | Answers, comments and replies | |
-| Baidu Tieba | Posts | Floors and replies | |
+| Bilibili | Videos | Top comments with replies | No |
+| Zhihu | Answers and articles | Answers, comments, and replies | No |
+| Baidu Tieba | Posts | Floors and replies | No |
 
-Douyin is the mainland-China app; it is not TikTok, and TikTok is not covered.
+Douyin is the mainland China app, not TikTok. TikTok is not supported.
 
-## How to use it
+## How to use this Actor
 
-1. Paste your LargitData API key. Without a key, the Actor returns one sample record (marked `"sample": true`) so you can see the output format.
-2. Pick a platform and what to collect:
-   - **Keyword search**: enter a keyword in the platform's language (Simplified Chinese for most platforms) and, optionally, a date range.
-   - **Comments of a post**: enter the post URL.
-   - **Account timeline**: enter the account's author ID. On Weibo, Xiaohongshu and Douyin the date range defaults to the last 30 days.
-3. Run. The Actor creates a collection task, waits for it to finish, and saves every record to the dataset.
+1. Enter your LargitData API key. Without a key, the Actor returns one sample record (marked `"sample": true`) to preview the output format.
+2. Choose a platform and collection mode:
+   - **Keyword search**: enter a keyword in the platform's language (Simplified Chinese for most platforms), with an optional date range.
+   - **Post comments**: enter the post URL.
+   - **Account timeline**: enter the account's author ID. On Weibo, Xiaohongshu (RedNote), and Douyin, the date range defaults to the last 30 days.
+3. Run the Actor. It creates a collection task, waits for it to finish, and saves every record to the Apify dataset.
 
-Collection runs on LargitData's side and can take several minutes. If a task is still running when the timeout is reached, the Actor stops and writes the task ID to the `OUTPUT` record; the task keeps running and you can fetch it later.
+Collection runs on LargitData's servers and can take several minutes. If the Actor reaches its timeout while a task is still running, it stops and writes the task ID to the `OUTPUT` record. The task keeps running so you can retrieve it later.
 
 ## Input example
 
@@ -46,7 +46,7 @@ Collection runs on LargitData's side and can take several minutes. If a task is 
 
 ## Output example
 
-Each record keeps the fields the API returns, plus `platform` and `mode`. A Xiaohongshu note looks like this (sample values):
+Each record includes the fields returned by the API, plus `platform` and `mode`. Here is a sample Xiaohongshu (RedNote) note:
 
 ```json
 {
@@ -65,21 +65,21 @@ Each record keeps the fields the API returns, plus `platform` and `mode`. A Xiao
 }
 ```
 
-Field lists for every platform and mode are in the [API reference](https://api.infominer.io/docs) and the [developer pages](https://www.largitdata.com/developers/social-media-api/).
+See the full field lists for every platform and mode in the [API reference](https://api.infominer.io/docs) and [developer documentation](https://www.largitdata.com/developers/social-media-api/).
 
 ## FAQ
 
-**Can I read Weibo in English?**
-The LargitData API offers English keyword subscriptions for Weibo with machine translation. That feature is not part of this Actor; see the [Weibo English data page](https://www.largitdata.com/developers/social-media-api/weibo/english-translation/).
+**Can I get Weibo data in English?**
+Not through this Actor. The LargitData API offers English keyword subscriptions for Weibo with machine translation; see the [Weibo English data page](https://www.largitdata.com/developers/social-media-api/weibo/english-translation/) for details.
 
-**How far back does the data go?**
-History range, volume and refresh frequency are agreed per project when you request a trial.
+**How far back does historical data go?**
+Historical range, volume, and refresh frequency are set per project when you request a trial.
 
-**Can LargitData run the collection for me?**
-Yes. LargitData can monitor keywords and accounts, clean and translate the data, backfill history and deliver it to your systems.
+**Can LargitData manage data collection for me?**
+Yes. LargitData can monitor keywords and accounts, clean and translate the data, backfill historical data, and deliver it to your systems.
 
-## Source code
+## Source code and Python client
 
-OpenAPI description, Python client and this Actor's source: [github.com/ywchiu/social-media-api](https://github.com/ywchiu/social-media-api)
+Find the OpenAPI spec, Python client, and Actor source code on GitHub: [github.com/ywchiu/social-media-api](https://github.com/ywchiu/social-media-api).
 
 Built by [LargitData](https://www.largitdata.com/en/) (大數軟體), Taipei.

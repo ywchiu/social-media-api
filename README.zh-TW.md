@@ -1,35 +1,35 @@
 # 社群數據 API：微博、小紅書、抖音、Threads、嗶哩嗶哩、知乎、百度貼吧
 
-[大數軟體 LargitData 社群數據 API](https://www.largitdata.com/社群媒體API/) 的程式範例與 OpenAPI 描述。
-API 以 JSON 回傳 **微博**、**小紅書（RedNote）**、**抖音**、**Threads**、**嗶哩嗶哩**、**知乎**、**百度貼吧** 的公開貼文、留言、轉發與帳號時間軸。
-微博另可用英文關鍵字訂閱，取得英文機器翻譯。PTT、Dcard、X、Reddit、Facebook、Instagram 以帳號設定的頻道與關鍵字組提供，請洽詢。
+本儲存庫提供 [大數軟體 LargitData 社群數據 API](https://www.largitdata.com/社群媒體API/)（社群媒體爬蟲 API）的程式範例與 OpenAPI 規格。
+透過本 API 可取得 **微博**、**小紅書（RedNote）**、**抖音**、**Threads**、**嗶哩嗶哩**、**知乎**、**百度貼吧** 的公開貼文、留言、轉發與帳號時間軸，並以 JSON 格式回傳。
+微博另支援英文關鍵字訂閱，並提供英文機器翻譯。PTT、Dcard、X、Reddit、Facebook、Instagram 則依帳號設定的頻道與關鍵字組提供，歡迎洽詢。
 
 [English](README.md) · [日本語](README.ja.md)
 
-- 這是商用 API，申請試用後發給金鑰：**[申請試用](https://www.largitdata.com/社群媒體API/#api-inquiry)**。
-- 除了 API，也可以由大數軟體代為監測、清理、翻譯、回補歷史資料，直接交付到您的系統。
+- 本服務為商用 API，申請試用後即可取得 API 金鑰：**[申請試用](https://www.largitdata.com/社群媒體API/#api-inquiry)**。
+- 若不自行串接 API，亦可由大數軟體代為監測、清理、翻譯並回補歷史資料，直接交付至您的系統。
 
-## 可以蒐集什麼
+## 支援的平台與資料項目
 
 | 平台 | 關鍵字搜尋 | 留言／回覆 | 帳號時間軸 | 其他 |
 |---|---|---|---|---|
-| 微博 | 貼文 | 留言，可含第二層回覆 | 有 | 轉發與轉發鏈追蹤（最多 10 層）；英文關鍵字訂閱與英文機器翻譯 |
-| 小紅書（RedNote） | 筆記 | 留言，可含第二層回覆 | 有 | |
-| 抖音 | 影片 | 留言（預設每支影片 50 則，可調整） | 有 | |
-| Threads | 貼文 | 回覆 | 有 | 貼文的瀏覽、按讚、分享數與互動列表 |
+| 微博 | 貼文 | 留言（可含第二層回覆） | 支援 | 轉發與轉發鏈追蹤（最多 10 層）；英文關鍵字訂閱與英文機器翻譯 |
+| 小紅書（RedNote） | 筆記 | 留言（可含第二層回覆） | 支援 | |
+| 抖音 | 影片 | 留言（預設每支影片 50 則，可調整） | 支援 | |
+| Threads | 貼文 | 回覆 | 支援 | 貼文瀏覽、按讚、分享數與互動列表 |
 | 嗶哩嗶哩 | 影片（每次查詢約 1,000 支） | 最熱門 3 則留言，各含前 20 則回覆 | | |
 | 知乎 | 回答與專欄文章 | 問題的回答；回答與文章的留言及回覆 | | |
 | 百度貼吧 | 貼文（每次查詢約 620 篇） | 樓層與樓中樓回覆 | | |
 
-快手的影片搜尋與留言、微信公眾號文章也可蒐集；端點說明隨試用提供，不在這個 repo 裡。
+另支援快手影片搜尋與留言，以及微信公眾號文章；相關端點文件將隨試用申請提供，未收錄於本儲存庫。
 
-## 運作方式
+## API 運作方式與呼叫流程
 
-Base URL 是 `https://api.infominer.io/api/v2`，金鑰放在 `auth-header` 標頭。蒐集採非同步任務：
+Base URL 為 `https://api.infominer.io/api/v2`，API 金鑰透過 `auth-header` 標頭傳入。查詢採非同步任務機制：
 
-1. `POST` 建立任務（關鍵字搜尋、某篇貼文的留言、帳號時間軸等），取得任務 `id`。
-2. 用 `GET` 查詢該任務，直到狀態離開 `INIT`／`RUNNING`。
-3. 狀態為 `DONE` 時，同一個回應會帶回資料（`data`、`total_count`），以 `page` 與 `pageSize` 分頁。
+1. 呼叫 `POST` 建立任務（如關鍵字搜尋、指定貼文留言、帳號時間軸），取得任務 `id`。
+2. 以 `GET` 查詢該任務狀態，直到狀態不再是 `INIT` 或 `RUNNING`。
+3. 當狀態為 `DONE` 時，同一回應即會回傳資料（`data`、`total_count`），並可透過 `page` 與 `pageSize` 控制分頁。
 
 ```bash
 curl -X POST https://api.infominer.io/api/v2/xhs/search/task \
@@ -41,7 +41,7 @@ curl "https://api.infominer.io/api/v2/xhs/search/task/$TASK_ID?page=1&pageSize=1
   -H "auth-header: $LARGITDATA_API_KEY"
 ```
 
-完成後的小紅書筆記搜尋回應如下（範例值）：
+任務完成後，小紅書筆記搜尋的 JSON 回應範例如下：
 
 ```json
 {
@@ -70,9 +70,9 @@ curl "https://api.infominer.io/api/v2/xhs/search/task/$TASK_ID?page=1&pageSize=1
 
 ### Apify Actor
 
-也可以在 Apify 上執行：[apify.com/largitdata/social-media-api](https://apify.com/largitdata/social-media-api)。填入自己的 API 金鑰，結果會存成 Apify dataset，可匯出 CSV、Excel 或 JSON。
+本 API 也可以在 Apify 上執行：[apify.com/largitdata/social-media-api](https://apify.com/largitdata/social-media-api)。填入您的 API 金鑰即可使用，結果將存為 Apify dataset，支援匯出 CSV、Excel 或 JSON 格式。
 
-### Python client
+### Python Client 套件
 
 ```bash
 pip install "git+https://github.com/ywchiu/social-media-api#subdirectory=python"
@@ -89,39 +89,39 @@ for row in result.get("data", []):
     print(row["url"], row.get("like_count"), (row.get("content") or "")[:60])
 ```
 
-## 各功能文件
+## 各平台 API 端點文件
 
-每個連結都有參數、回應欄位、curl 與 Python 範例和範例回應。
+各端點文件均包含請求參數、回應欄位、curl 與 Python 範例及回傳範例。
 
-- 微博：[關鍵字搜尋](https://www.largitdata.com/開發者中心/社群媒體API/weibo/keyword-search/) · [留言](https://www.largitdata.com/開發者中心/社群媒體API/weibo/comments/) · [轉發與轉發鏈](https://www.largitdata.com/開發者中心/社群媒體API/weibo/reposts/) · [帳號時間軸](https://www.largitdata.com/開發者中心/社群媒體API/weibo/user-timeline/) · [英譯資料](https://www.largitdata.com/開發者中心/社群媒體API/weibo/english-translation/)
-- 小紅書：[筆記搜尋](https://www.largitdata.com/開發者中心/社群媒體API/xiaohongshu/keyword-search/) · [留言與回覆](https://www.largitdata.com/開發者中心/社群媒體API/xiaohongshu/comments/) · [帳號時間軸](https://www.largitdata.com/開發者中心/社群媒體API/xiaohongshu/user-timeline/)
-- 抖音：[影片搜尋](https://www.largitdata.com/開發者中心/社群媒體API/douyin/keyword-search/) · [留言](https://www.largitdata.com/開發者中心/社群媒體API/douyin/comments/) · [帳號時間軸](https://www.largitdata.com/開發者中心/社群媒體API/douyin/user-timeline/)
-- Threads：[關鍵字搜尋](https://www.largitdata.com/開發者中心/社群媒體API/threads/keyword-search/) · [回覆](https://www.largitdata.com/開發者中心/社群媒體API/threads/replies/) · [帳號時間軸](https://www.largitdata.com/開發者中心/社群媒體API/threads/user-timeline/) · [互動](https://www.largitdata.com/開發者中心/社群媒體API/threads/reactions/)
-- 嗶哩嗶哩：[影片搜尋](https://www.largitdata.com/開發者中心/社群媒體API/bilibili/keyword-search/) · [留言](https://www.largitdata.com/開發者中心/社群媒體API/bilibili/comments/)
-- 知乎：[關鍵字搜尋](https://www.largitdata.com/開發者中心/社群媒體API/zhihu/keyword-search/) · [回答與留言](https://www.largitdata.com/開發者中心/社群媒體API/zhihu/answers-and-comments/)
-- 百度貼吧：[貼文搜尋](https://www.largitdata.com/開發者中心/社群媒體API/tieba/keyword-search/) · [樓層與回覆](https://www.largitdata.com/開發者中心/社群媒體API/tieba/replies/)
+- **微博**：[關鍵字搜尋](https://www.largitdata.com/開發者中心/社群媒體API/weibo/keyword-search/) · [留言](https://www.largitdata.com/開發者中心/社群媒體API/weibo/comments/) · [轉發與轉發鏈](https://www.largitdata.com/開發者中心/社群媒體API/weibo/reposts/) · [帳號時間軸](https://www.largitdata.com/開發者中心/社群媒體API/weibo/user-timeline/) · [英文翻譯資料](https://www.largitdata.com/開發者中心/社群媒體API/weibo/english-translation/)
+- **小紅書（RedNote）**：[筆記搜尋](https://www.largitdata.com/開發者中心/社群媒體API/xiaohongshu/keyword-search/) · [留言與回覆](https://www.largitdata.com/開發者中心/社群媒體API/xiaohongshu/comments/) · [帳號時間軸](https://www.largitdata.com/開發者中心/社群媒體API/xiaohongshu/user-timeline/)
+- **抖音**：[影片搜尋](https://www.largitdata.com/開發者中心/社群媒體API/douyin/keyword-search/) · [留言](https://www.largitdata.com/開發者中心/社群媒體API/douyin/comments/) · [帳號時間軸](https://www.largitdata.com/開發者中心/社群媒體API/douyin/user-timeline/)
+- **Threads**：[關鍵字搜尋](https://www.largitdata.com/開發者中心/社群媒體API/threads/keyword-search/) · [回覆](https://www.largitdata.com/開發者中心/社群媒體API/threads/replies/) · [帳號時間軸](https://www.largitdata.com/開發者中心/社群媒體API/threads/user-timeline/) · [貼文互動](https://www.largitdata.com/開發者中心/社群媒體API/threads/reactions/)
+- **嗶哩嗶哩**：[影片搜尋](https://www.largitdata.com/開發者中心/社群媒體API/bilibili/keyword-search/) · [留言](https://www.largitdata.com/開發者中心/社群媒體API/bilibili/comments/)
+- **知乎**：[關鍵字搜尋](https://www.largitdata.com/開發者中心/社群媒體API/zhihu/keyword-search/) · [回答與留言](https://www.largitdata.com/開發者中心/社群媒體API/zhihu/answers-and-comments/)
+- **百度貼吧**：[貼文搜尋](https://www.largitdata.com/開發者中心/社群媒體API/tieba/keyword-search/) · [樓層與回覆](https://www.largitdata.com/開發者中心/社群媒體API/tieba/replies/)
 
-完整文件：https://api.infominer.io/docs
+完整 OpenAPI 線上文件：https://api.infominer.io/docs
 
-## 常見問題
+## 常見問題（FAQ）
 
-**可以用 JSON 取得小紅書筆記的留言嗎？**
-可以。用筆記網址呼叫 `POST /xhs/pushs/task` 蒐集留言，可選擇包含第二層回覆；`POST /xhs/search/task` 則是用關鍵字搜尋筆記。
+**可以用 API 以 JSON 格式取得小紅書（RedNote）筆記留言嗎？**
+可以。傳入筆記網址並呼叫 `POST /xhs/pushs/task` 即可取得留言（可選擇包含第二層回覆）；若要以關鍵字搜尋筆記，請呼叫 `POST /xhs/search/task`。
 
-**看不懂中文，可以讀英文版的微博嗎？**
-可以訂閱英文關鍵字：系統會轉成中文搜尋詞，回補近 30 天符合的貼文並附英文機器翻譯。不在訂閱範圍內的貼文不提供即時翻譯。
+**不懂中文也能透過 API 取得微博英文翻譯嗎？**
+可以。訂閱英文關鍵字後，系統會轉成中文搜尋詞，回補近 30 天符合的貼文並附英文機器翻譯；不在訂閱範圍內的貼文則不提供即時翻譯。
 
-**抖音和 TikTok 一樣嗎？**
-不一樣。抖音是中國大陸使用的 App，內容獨立。這個 API 涵蓋抖音，不含 TikTok。
+**抖音（Douyin）和 TikTok 一樣嗎？**
+不一樣。抖音是中國大陸使用的 App，與 TikTok 內容各自獨立。本 API 涵蓋抖音，不包含 TikTok。
 
-**資料可以回溯多久、多久更新一次？**
-歷史範圍、資料量與更新頻率會在申請試用時依專案確認。
+**歷史資料可以回溯多久？更新頻率為何？**
+歷史資料回溯範圍、資料量與更新頻率，將於申請試用時依專案需求確認。
 
-**可以不自己呼叫 API，直接交付資料嗎？**
-可以。大數軟體可以代為監測關鍵字與帳號、清理與翻譯資料、回補歷史，再交付到您的系統。
+**可以不自行串接 API，改由大數軟體直接交付資料嗎？**
+可以。大數軟體可代為監測關鍵字與帳號、清理並翻譯資料、回補歷史資料，再直接交付至您的系統。
 
-## 關於
+## 關於大數軟體（LargitData）
 
-[大數軟體有限公司](https://www.largitdata.com/)（LargitData）位於台北，開發 InfoMiner、RAGi 與數據 API。問題請透過[試用申請表](https://www.largitdata.com/社群媒體API/#api-inquiry)聯絡。
+[大數軟體有限公司](https://www.largitdata.com/)（LargitData）位於台北，開發 InfoMiner、RAGi 與數據 API。如有疑問，請透過[試用申請表](https://www.largitdata.com/社群媒體API/#api-inquiry)與我們聯絡。
 
-本 repo 的範例程式以 MIT 授權釋出。API 本身的使用依您與大數軟體的合約。
+本儲存庫的範例程式採 MIT 授權釋出。API 本身的使用依您與大數軟體的合約。

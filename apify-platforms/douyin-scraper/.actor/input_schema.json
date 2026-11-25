@@ -13,7 +13,7 @@
     "mode": {
       "title": "What to collect",
       "type": "string",
-      "description": "Keyword search: Videos matching a keyword, optionally within a date range. Comments of a video: Comments of one video (Post URL). Account posts: One account's videos (Author ID). The date range defaults to the last 30 days.",
+      "description": "Keyword search: Videos matching a keyword, with an optional date range. Comments of a video: Comments on one video (Post URL). Account posts: Videos from one account (Author ID). Defaults to the last 30 days.",
       "editor": "select",
       "enum": [
         "keyword_search",
@@ -30,7 +30,7 @@
     "keyword": {
       "title": "Keyword",
       "type": "string",
-      "description": "Search keyword for Keyword search, in Simplified Chinese.",
+      "description": "Query term for Keyword search mode, in Simplified Chinese.",
       "editor": "textfield",
       "prefill": "露营装备"
     },
@@ -49,7 +49,7 @@
     "startDate": {
       "title": "Start date",
       "type": "string",
-      "description": "YYYY-MM-DD. Account timeline defaults to the last 30 days when left empty.",
+      "description": "Start date (YYYY-MM-DD). Defaults to the last 30 days in Account timeline mode.",
       "editor": "datepicker"
     },
     "endDate": {
@@ -61,7 +61,7 @@
     "maxPages": {
       "title": "Max result pages to crawl",
       "type": "integer",
-      "description": "How deep the collector goes on the platform (max_pages). Larger values take longer.",
+      "description": "Page depth to collect (max_pages). Higher values take longer.",
       "default": 3,
       "minimum": 1,
       "maximum": 50

@@ -1,7 +1,7 @@
 {
   "info": {
-    "name": "LargitData Social Media API (Weibo, Xiaohongshu, Douyin, Threads, Bilibili, Zhihu, Baidu Tieba)",
-    "description": "Reference: https://www.largitdata.com/developers/social-media-api/ . Keys are issued after a trial request: https://www.largitdata.com/en/social-media-api/#api-inquiry",
+    "name": "LargitData Social Media API (Weibo, Xiaohongshu (RedNote), Douyin, Threads, Bilibili, Zhihu, Baidu Tieba)",
+    "description": "Reference: https://www.largitdata.com/developers/social-media-api/. Request a trial to get an API key: https://www.largitdata.com/en/social-media-api/#api-inquiry",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {

@@ -1,7 +1,7 @@
 # largitdata-social
 
-Python client for the LargitData Social Media Data API (Weibo, Xiaohongshu / RedNote, Douyin, Threads,
-Bilibili, Zhihu, Baidu Tieba).
+Python client for the LargitData Social Media Data API covering Weibo, Xiaohongshu (RedNote), Douyin, Threads,
+Bilibili, Zhihu, and Baidu Tieba.
 Keys are issued after a trial request: https://www.largitdata.com/en/social-media-api/#api-inquiry
 
 ```python

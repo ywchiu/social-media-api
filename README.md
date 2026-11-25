@@ -1,7 +1,7 @@
 # Social Media Data API: Weibo, Xiaohongshu (RedNote), Douyin, Threads, Bilibili, Zhihu, Baidu Tieba
 
 Code examples and an OpenAPI description for the [LargitData Social Media API](https://www.largitdata.com/en/social-media-api/),
-which returns public posts, comments, reposts and account timelines as JSON from **Weibo (微博)**,
+a commercial social media scraper API returning public posts, comments, reposts, and account timelines as JSON from **Weibo (微博)**,
 **Xiaohongshu (RedNote, 小红书)**, **Douyin (抖音)**, **Threads**, **Bilibili (哔哩哔哩)**, **Zhihu (知乎)**
 and **Baidu Tieba (百度贴吧)**. Weibo data is also available with
 **English machine translation** through a keyword subscription. PTT, Dcard, X, Reddit, Facebook and
@@ -9,19 +9,19 @@ Instagram are available through account-configured channels; ask us.
 
 [日本語](README.ja.md)
 
-- This is a commercial API. Keys are issued after a trial request:
+- **Trial and API keys:** Commercial API. To get a key,
   **[request a trial](https://www.largitdata.com/en/social-media-api/#api-inquiry)**.
-- Besides the API, LargitData can monitor, clean, translate and backfill the data and deliver it into your
+- **Managed data delivery:** Beyond the API, LargitData can monitor, clean, translate, backfill, and deliver data into your
   systems as a service.
 
-## How it works
+## How the async API works
 
-Base URL `https://api.infominer.io/api/v2`; send your key in the `auth-header` request header.
+Use base URL `https://api.infominer.io/api/v2` and send your API key in the `auth-header` header.
 Collection is asynchronous:
 
-1. `POST` creates a task (keyword search, the comments of one post, an account timeline, ...) and returns its `id`.
-2. `GET` the task by `id` until its status leaves `INIT` / `RUNNING`.
-3. At `DONE`, the same response carries the records (`data`, `total_count`), paged with `page` and `pageSize`.
+1. Send a `POST` request to create a task (for example, keyword search, post comments, or account timeline) and get a task `id`.
+2. Poll the task with `GET` by `id` until its status is no longer `INIT` or `RUNNING`.
+3. When status reaches `DONE`, the response returns records in `data` with `total_count`, paginated via `page` and `pageSize`.
 
 ```bash
 curl -X POST https://api.infominer.io/api/v2/weibo/search/task \
@@ -33,7 +33,7 @@ curl "https://api.infominer.io/api/v2/weibo/search/task/$TASK_ID?page=1&pageSize
   -H "auth-header: $LARGITDATA_API_KEY"
 ```
 
-## Endpoints by capability
+## Supported platforms and endpoints
 
 Each link goes to a page with parameters, response fields, curl and Python examples and a sample response.
 
@@ -62,7 +62,7 @@ Each link goes to a page with parameters, response fields, curl and Python examp
 | [Baidu Tieba replies API](https://www.largitdata.com/developers/social-media-api/tieba/replies/) | `POST /tieba/pushs/task`, `GET /tieba/pushs/task/{task_id}` |
 
 Platform references: [Weibo](https://www.largitdata.com/developers/social-media-api/weibo/) ·
-[Xiaohongshu](https://www.largitdata.com/developers/social-media-api/xiaohongshu/) ·
+[Xiaohongshu (RedNote)](https://www.largitdata.com/developers/social-media-api/xiaohongshu/) ·
 [Douyin](https://www.largitdata.com/developers/social-media-api/douyin/) ·
 [Threads](https://www.largitdata.com/developers/social-media-api/threads/) ·
 [Bilibili](https://www.largitdata.com/developers/social-media-api/bilibili/) ·
@@ -71,7 +71,7 @@ Platform references: [Weibo](https://www.largitdata.com/developers/social-media-
 
 ## Files
 
-- [`openapi.json`](openapi.json): OpenAPI 3.1 description of the Weibo, Xiaohongshu, Douyin and Threads
+- [`openapi.json`](openapi.json): OpenAPI 3.1 spec covering Weibo, Xiaohongshu (RedNote), Douyin, and Threads
   endpoints (2026-10-25 specification snapshot) and the Bilibili, Zhihu and Baidu Tieba endpoints (2026-11-21).
 - [`examples/`](examples/): runnable Python scripts (`pip install -r examples/requirements.txt`,
   then `export LARGITDATA_API_KEY=...`).
@@ -79,27 +79,27 @@ Platform references: [Weibo](https://www.largitdata.com/developers/social-media-
   import it and set the `api_key` collection variable.
 - [`python/`](python/): `largitdata-social`, a small Python client (create a task, wait for it, read rows).
 
-## Limits worth knowing
+## API limits and pagination
 
-- Keyword search results are read up to 100 per page; comments up to 1000 per page.
-- Weibo and Xiaohongshu comment tasks can include second-layer replies (`crawl_second_layer`); Douyin cannot.
+- Keyword search returns up to 100 results per page; comment endpoints return up to 1000 per page.
+- Weibo and Xiaohongshu (RedNote) comment tasks support second-layer replies (`crawl_second_layer`); Douyin does not.
 - Douyin comment tasks collect 50 comments per video by default (`max_items`, `get_all` to change).
 - Weibo repost chains are traced up to depth 10 (default 3).
 - Threads search, reply and timeline polls return the rows collected so far in `data` with `total_count`,
-  readable while the task is still `RUNNING`, paged with `page` and `per_page` (max 1000; the bundled 2026-10-25 OpenAPI
-  file still describes these polls as status-only). Reactions tasks return the post's view, like and share counts
-  and a paginated reactions list (`per_page` up to 1000) when they complete; `mask_author` removes author
+  even while `RUNNING`. Paginate with `page` and `per_page` (max 1000; the bundled 2026-10-25 OpenAPI
+  spec still marks these polls as status-only). On completion, reactions tasks return view, like, and share counts
+  plus a paginated reactions list (`per_page` up to 1000). Use `mask_author` to omit author
   identity fields.
 - Weibo English translation backfills the last 30 days for subscribed keywords; arbitrary posts are not
   translated on demand.
-- Bilibili, Zhihu and Baidu Tieba tasks carry `task`, `total_count` and `data` only once `DONE`; other statuses
-  return the task object alone. One Bilibili search reaches about 1,000 videos, and a comment task collects at
-  most a video's 3 most popular top-level comments and 20 replies under each. Zhihu search covers answers and
-  column articles and is not exhaustive. One Tieba search reaches about 620 threads (`depth_capped` tells you
+- Bilibili, Zhihu, and Baidu Tieba responses include `task`, `total_count`, and `data` only when `DONE`; other statuses
+  return only the task object. Bilibili returns about 1,000 videos per search, and each comment task returns up to
+  the 3 most popular top-level comments per video with up to 20 replies each. Zhihu search covers answers and
+  column articles (not exhaustive). Baidu Tieba returns about 620 threads per search (`depth_capped` indicates
   when the date range was cut short); in-floor replies are capped at 600 per floor.
-- How far back data goes, volume and refresh frequency are confirmed per project.
+- Historical depth, volume, and refresh frequency are confirmed per project.
 
-## About
+## About LargitData
 
 [LargitData](https://www.largitdata.com/en/) (大數軟體有限公司) is a Taipei-based company that builds InfoMiner, RAGi and data
 APIs. Questions: use the [trial request form](https://www.largitdata.com/en/social-media-api/#api-inquiry).

@@ -13,7 +13,7 @@
     "mode": {
       "title": "What to collect",
       "type": "string",
-      "description": "Keyword search: Posts matching a keyword, optionally within a date range. Replies to a post: Replies to one post (Post URL). Account timeline: One public account's posts (Author ID), optionally within a date range.",
+      "description": "Keyword search: Posts matching a keyword, optionally within a date range. Replies to a post: Replies to one post (Post URL). Account timeline: Posts from one public account (Author ID), with an optional date range.",
       "editor": "select",
       "enum": [
         "keyword_search",
@@ -30,7 +30,7 @@
     "keyword": {
       "title": "Keyword",
       "type": "string",
-      "description": "Search keyword for Keyword search, in the language of the posts you want.",
+      "description": "Query term for Keyword search mode, in the language of the posts you want.",
       "editor": "textfield",
       "prefill": "珍珠奶茶"
     },
@@ -61,7 +61,7 @@
     "maxPages": {
       "title": "Max scroll depth",
       "type": "integer",
-      "description": "How deep the collector scrolls on Threads (max_scroll). Larger values take longer.",
+      "description": "Scroll depth on Threads (max_scroll). Higher values take longer.",
       "default": 3,
       "minimum": 1,
       "maximum": 50

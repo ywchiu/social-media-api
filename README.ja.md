@@ -10,11 +10,11 @@ PTT、Dcard、X、Reddit、Facebook、Instagram はアカウント単位の設�
 
 - 商用 API です。API キーはトライアル申込後に発行します：**[トライアルを申し込む](https://www.largitdata.com/ja/social-media-api/#api-inquiry)**
 
-## 仕組み
+## 非同期 API の仕組み
 
 Base URL は `https://api.infominer.io/api/v2`、API キーは `auth-header` リクエストヘッダーで送信します。
 収集は非同期です：`POST` でタスクを作成して `id` を受け取り、`GET` でステータスが `INIT` / `RUNNING` でなくなるまで
-ポーリングし、`DONE` になると同じレスポンスに `data` と `total_count` が含まれます（`page` と `pageSize` でページ送り）。
+ポーリングします。`DONE` になると同じレスポンスで `data` と `total_count` を取得でき、`page` と `pageSize` でページ送りできます。
 
 ```bash
 curl -X POST https://api.infominer.io/api/v2/weibo/search/task \
@@ -26,7 +26,7 @@ curl "https://api.infominer.io/api/v2/weibo/search/task/$TASK_ID?page=1&pageSize
   -H "auth-header: $LARGITDATA_API_KEY"
 ```
 
-## 機能別のエンドポイント
+## 対応プラットフォームとエンドポイント一覧
 
 | 機能 | エンドポイント |
 |---|---|
@@ -58,33 +58,33 @@ curl "https://api.infominer.io/api/v2/weibo/search/task/$TASK_ID?page=1&pageSize
 [Threads](https://www.largitdata.com/ja/developers/social-media-api/threads/) ·
 [ビリビリ](https://www.largitdata.com/ja/developers/social-media-api/bilibili/) ·
 [知乎](https://www.largitdata.com/ja/developers/social-media-api/zhihu/) ·
-[百度貼吧](https://www.largitdata.com/ja/developers/social-media-api/tieba/)。完全なドキュメント：https://api.infominer.io/docs
+[百度貼吧](https://www.largitdata.com/ja/developers/social-media-api/tieba/)。詳細ドキュメント：https://api.infominer.io/docs
 
-## ファイル
+## リポジトリの構成
 
-- [`openapi.json`](openapi.json)：Weibo・小紅書・抖音・Threads エンドポイントの OpenAPI 3.1 定義（2026-10-25 仕様スナップショット）と、ビリビリ・知乎・百度貼吧のエンドポイント（2026-11-21 時点の仕様）
-- [`examples/`](examples/)：Python のサンプル（`pip install -r examples/requirements.txt` の後、
-  `export LARGITDATA_API_KEY=...` を設定して実行）
+- [`openapi.json`](openapi.json)：OpenAPI 3.1 仕様ファイルです。Weibo・小紅書・抖音・Threads（2026-10-25 仕様スナップショット）と、ビリビリ・知乎・百度貼吧（2026-11-21 時点の仕様）のエンドポイントを収録しています。
+- [`examples/`](examples/)：実行可能な Python サンプルです（`pip install -r examples/requirements.txt` 実行後、
+  `export LARGITDATA_API_KEY=...` を設定して実行します）。
 
-## 知っておきたい制限
+## API の制限事項とページネーション
 
 - キーワード検索の結果は 1 ページ最大 100 件、コメントは最大 1000 件まで取得できます。
 - Weibo と小紅書のコメントタスクは 2 層目の返信（`crawl_second_layer`）も取得できます。抖音は対象外です。
-- 抖音のコメントタスクは既定で 1 動画あたり 50 件を収集します（`max_items`、`get_all` で変更）。
+- 抖音のコメントタスクは既定で 1 動画あたり 50 件を収集します（`max_items` または `get_all` で変更できます）。
 - Weibo のリポストチェーンは深さ 10 まで追跡できます（既定は 3）。
-- Threads の検索・返信・タイムラインのタスクは、ポーリングで収集済みの行を `data` に、件数を `total_count` に返し、
+- Threads の検索・返信・タイムラインのタスクは、ポーリング時に収集済みレコードを `data`、件数を `total_count` で返し、
   タスクが `RUNNING` の間も読み取れます。reactions タスクは完了時に投稿の閲覧数・いいね数・シェア数と、ページ分割された
   reactions 一覧（`per_page` は最大 1000）を返します。`mask_author` で投稿者の識別情報を除外できます。
 - Weibo の英語翻訳は購読キーワードについて直近 30 日分をさかのぼって取得します。任意の投稿をその場で翻訳する機能ではありません。
 - ビリビリ、知乎、百度貼吧のタスクは `DONE` のときだけ `task`、`total_count`、`data` を返し、それ以外はタスクオブジェクトのみを返します。
   ビリビリの検索は 1 回約 1,000 本まで、コメントタスクは動画の人気上位 3 件の第 1 階層コメントとそれぞれの返信 20 件までです。
-  知乎の検索は回答とコラム記事が対象で、網羅的ではありません。貼吧の検索は 1 回約 620 スレッドまで（`depth_capped` で期間が途中で
-  切れたかがわかります）、フロア内の返信は 1 フロア最大 600 件です。
+  知乎の検索は回答とコラム記事が対象で、網羅的ではありません。百度貼吧の検索は 1 回約 620 スレッドまでです（`depth_capped` で期間が途中で
+  切れたかを確認できます）。フロア内の返信は 1 フロア最大 600 件です。
 - 取得できる期間、件数、更新頻度はプロジェクトごとに確認します。
 
-## 概要
+## LargitData について
 
-[LargitData](https://www.largitdata.com/ja/)（大數軟體有限公司）は台北の企業で、InfoMiner、RAGi とデータ API を提供しています。
-お問い合わせは[トライアル申込フォーム](https://www.largitdata.com/ja/social-media-api/#api-inquiry)からどうぞ。
+[LargitData](https://www.largitdata.com/ja/)（大數軟體有限公司）は台北を拠点とする企業で、InfoMiner、RAGi、および各種データ API を提供しています。
+お問い合わせは[トライアル申込フォーム](https://www.largitdata.com/ja/social-media-api/#api-inquiry)より受け付けております。
 
 このリポジトリのサンプルコードは MIT License で公開しています。API 自体の利用は LargitData との契約に従います。
